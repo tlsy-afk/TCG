@@ -180,7 +180,7 @@
     <header>
         <h1>🏴‍☠️ ONE PIECE 展示圖鑑</h1>
         
-        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號、罕貴度 (SEC/SR)..." onkeyup="filterCards()">
+        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號、稀有度 (SEC/SR)..." onkeyup="filterCards()">
         
         <div class="filter-row" id="colorFilters">
             <span class="row-label">─ 顏色</span>
@@ -277,12 +277,12 @@
             });
         }
 
-        // --- 核心過濾邏輯（已升級：包含罕貴度搜尋） ---
+        // --- 核心過濾邏輯（已升級：包含稀有度搜尋） ---
         function filterCards() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             
             const filtered = cardData.filter(card => {
-                // 1. 🔍 升級這裡：同時檢查卡名、卡號、以及罕貴度 (rarity)
+                // 1. 🔍 升級這裡：同時檢查卡名、卡號、以及稀有度 (rarity)
                 const matchSearch = card.name.toLowerCase().includes(keyword) || 
                                      card.code.toLowerCase().includes(keyword) ||
                                      card.rarity.toLowerCase().includes(keyword);
