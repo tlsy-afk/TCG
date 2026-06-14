@@ -3,21 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的 TCG 卡牌商店</title>
+    <title>我的 TCG 專屬商店</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f4f4f4; }
-        h1 { color: #333; }
-        .card-box { border: 2px solid #ccc; padding: 20px; display: inline-block; background: white; border-radius: 8px; }
+        /* 基礎設定與配色 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212; /* 深色電競風格背景 */
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #1e1e1e;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #e53935; /* 紅色點綴 */
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
+        /* 網格佈局：讓卡牌自動適應手機與電腦螢幕 */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        /* 卡片設計 */
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px); /* 滑鼠游標移過去會浮起來 */
+        }
+        .card-image {
+            width: 100%;
+            height: 350px;
+            background-color: #333;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            /* 未來這裡會換成真正的卡牌圖片網址 */
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .card-price {
+            color: #e53935;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        /* 購買按鈕 */
+        .buy-btn {
+            background-color: #e53935;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        .buy-btn:hover {
+            background-color: #ff5252;
+        }
     </style>
 </head>
 <body>
-    <h1>歡迎來到我的 TCG 商店</h1>
-    <p>隨時隨地管理卡牌，全功能客製化網頁測試中！</p>
-    
-    <div class="card-box">
-        <h3>測試卡片：噴火龍 ex</h3>
-        <p>價格：$1500</p>
-        <button onclick="alert('感謝購買！這將會串接金流。')">立即購買</button>
+
+    <header>
+        <h1>🔥 TCG 珍稀卡牌專賣</h1>
+        <p>最新彈、異圖、高罕貴度卡牌都在這</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-image">圖片位置</div>
+            <div class="card-title">噴火龍 ex (SAR)</div>
+            <div class="card-price">NT$ 3,500</div>
+            <button class="buy-btn" onclick="alert('已將 噴火龍 ex 加入購物車！')">加入購物車</button>
+        </div>
+
+        <div class="card">
+            <div class="card-image">圖片位置</div>
+            <div class="card-title">莉莉艾 (SR)</div>
+            <div class="card-price">NT$ 12,000</div>
+            <button class="buy-btn" onclick="alert('已將 莉莉艾 加入購物車！')">加入購物車</button>
+        </div>
+
+        <div class="card">
+            <div class="card-image">圖片位置</div>
+            <div class="card-title">皮卡丘 AR</div>
+            <div class="card-price">NT$ 800</div>
+            <button class="buy-btn" onclick="alert('已將 皮卡丘 AR 加入購物車！')">加入購物車</button>
+        </div>
+        
+        <div class="card">
+            <div class="card-image">圖片位置</div>
+            <div class="card-title">超夢 VSTAR (UR)</div>
+            <div class="card-price">NT$ 1,200</div>
+            <button class="buy-btn" onclick="alert('已將 超夢 VSTAR 加入購物車！')">加入購物車</button>
+        </div>
     </div>
+
 </body>
 </html>
