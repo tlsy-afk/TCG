@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #0c111d; /* 更深邃的海洋暗色調 */
+            background-color: #0c111d; 
             color: #f8fafc;
             margin: 0;
             padding: 0;
@@ -28,21 +28,72 @@
             margin: 0 0 12px 0;
             font-size: 20px;
             text-align: center;
-            color: #38bdf8; /* 航海王藍色科技感 */
+            color: #38bdf8; 
         }
 
+        /* 搜尋框 */
         .search-box {
             width: 100%;
             padding: 12px 15px;
-            border-radius: 20px;
+            border-radius: 8px; /* 稍微改成方正一點配合分類按鈕 */
             border: 1px solid #334155;
             background-color: #1e293b;
             color: white;
             font-size: 16px;
             box-sizing: border-box;
             outline: none;
+            margin-bottom: 12px;
         }
         .search-box::placeholder { color: #94a3b8; }
+
+        /* --- 新增：分類按鈕區塊樣式 --- */
+        .filter-container {
+            display: flex;
+            align-items: center;
+            overflow-x: auto; /* 螢幕太小可左右滑動 */
+            white-space: nowrap;
+            padding-bottom: 4px;
+        }
+        .filter-container::-webkit-scrollbar {
+            display: none; /* 隱藏滑動條讓畫面更乾淨 */
+        }
+        
+        .filter-label {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 12px;
+            color: #f8fafc;
+        }
+        /* 標籤旁邊的垂直線 */
+        .filter-label span {
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background-color: #f8fafc; 
+            margin-right: 6px;
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            color: #f8fafc;
+            border: 2px solid #f8fafc;
+            padding: 6px 12px;
+            margin-right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            /* 讓按鈕方正一點，符合你提供的截圖風格 */
+            border-radius: 0; 
+        }
+        /* 選中時的狀態：反轉顏色 */
+        .filter-btn.active {
+            background-color: #f8fafc;
+            color: #0c111d; 
+        }
+        /* ---------------------------------- */
 
         .gallery {
             display: grid;
@@ -61,11 +112,10 @@
             flex-direction: column;
         }
 
-        /* 實體卡片圖片設定 */
         .card-img {
             width: 100%;
-            aspect-ratio: 63 / 88; /* 完美符合航海王卡牌比例 */
-            object-fit: cover; /* 確保圖片填滿區域不變形 */
+            aspect-ratio: 63 / 88; 
+            object-fit: cover; 
             background-color: #0f172a;
         }
 
@@ -82,7 +132,7 @@
             font-weight: bold;
             margin: 0 0 4px 0;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* 最多顯示兩行名稱 */
+            -webkit-line-clamp: 2; 
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -105,25 +155,37 @@
 
     <header>
         <h1>🏴‍☠️ ONE PIECE TCG 線上圖鑑</h1>
-        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色、卡號、罕貴度..." onkeyup="filterCards()">
+        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色、卡號..." onkeyup="filterCards()">
+        
+        <div class="filter-container">
+            <div class="filter-label"><span></span>分類</div>
+            <button class="filter-btn active" onclick="setCategory('ALL', this)">ALL</button>
+            <button class="filter-btn" onclick="setCategory('BOOSTERS', this)">BOOSTERS</button>
+            <button class="filter-btn" onclick="setCategory('DECKS', this)">DECKS</button>
+            <button class="filter-btn" onclick="setCategory('OTHER', this)">OTHER</button>
+        </div>
     </header>
 
     <div class="gallery" id="cardGallery"></div>
 
     <script>
+        // 目前選中的分類，預設為 ALL
+        let currentCategory = 'ALL';
+
         // 【航海王卡牌資料庫】
-        // image 欄位填入你上傳到 GitHub 的照片檔名
+        // ⚠️ 注意：我幫每筆資料加上了 "category" 欄位！
         const cardData = [
-            { name: "蒙其·D·路飛 (漫畫異圖)", code: "OP05-119", rarity: "SEC", price: "詢價/暫存", image: "luffy.jpg" },
-            { name: "波特卡斯·D·艾斯", code: "OP02-013", rarity: "SR", price: "HK$ 120", image: "ace.jpg" },
-            { name: "羅羅亞·索隆", code: "OP01-025", rarity: "R", price: "HK$ 45", image: "zoro.jpg" },
-            { name: "香克斯 (漫畫異圖)", code: "OP01-120", rarity: "SEC", price: "詢價/聯繫", image: "shanks.jpg" },
-            { name: "大和", code: "OP01-121", rarity: "SEC", price: "HK$ 180", image: "yamato.jpg" },
-            { name: "薩波", code: "OP04-083", rarity: "SR", price: "HK$ 60", image: "sabo.jpg" }
+            { name: "蒙其·D·路飛 (漫畫異圖)", code: "OP05-119", rarity: "SEC", price: "詢價/暫存", image: "luffy.jpg", category: "BOOSTERS" },
+            { name: "波特卡斯·D·艾斯", code: "OP02-013", rarity: "SR", price: "HK$ 120", image: "ace.jpg", category: "BOOSTERS" },
+            { name: "ST-10 究極牌組 三船長", code: "ST-10", rarity: "Deck", price: "HK$ 150", image: "st10.jpg", category: "DECKS" },
+            { name: "官方特製卡套 (索隆款)", code: "Sleeve", rarity: "Accessory", price: "HK$ 65", image: "sleeve.jpg", category: "OTHER" },
+            { name: "大和", code: "OP01-121", rarity: "SEC", price: "HK$ 180", image: "yamato.jpg", category: "BOOSTERS" },
+            { name: "ST-11 起步牌組 烏塔", code: "ST-11", rarity: "Deck", price: "HK$ 80", image: "st11.jpg", category: "DECKS" }
         ];
 
         const gallery = document.getElementById('cardGallery');
 
+        // 生成卡牌畫面的功能
         function renderCards(cards) {
             gallery.innerHTML = '';
             cards.forEach(card => {
@@ -143,16 +205,39 @@
             });
         }
 
+        // 點擊分類按鈕時觸發的函數
+        function setCategory(categoryName, btnElement) {
+            currentCategory = categoryName;
+
+            // 1. 把所有按鈕的 active 狀態移除
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            // 2. 替目前點擊的這顆按鈕加上 active (變成白底黑字)
+            btnElement.classList.add('active');
+
+            // 3. 重新過濾畫面
+            filterCards();
+        }
+
+        // 同時處理「搜尋框」和「分類按鈕」的過濾邏輯
         function filterCards() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = cardData.filter(card => 
-                card.name.toLowerCase().includes(keyword) || 
-                card.code.toLowerCase().includes(keyword) || 
-                card.rarity.toLowerCase().includes(keyword)
-            );
+            
+            const filtered = cardData.filter(card => {
+                // 檢查是否符合搜尋字詞
+                const matchKeyword = card.name.toLowerCase().includes(keyword) || 
+                                     card.code.toLowerCase().includes(keyword);
+                
+                // 檢查是否符合目前選中的分類
+                const matchCategory = (currentCategory === 'ALL') || (card.category === currentCategory);
+
+                // 必須同時符合「搜尋字」與「分類」才會顯示出來
+                return matchKeyword && matchCategory;
+            });
+            
             renderCards(filtered);
         }
 
+        // 網頁一打開先載入所有卡片
         renderCards(cardData);
     </script>
 
