@@ -2,125 +2,159 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的 TCG 專屬商店</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我的 TCG 線上卡本</title>
     <style>
-        /* 基礎設定與配色 */
+        /* 手機版基礎設定 */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212; /* 深色電競風格背景 */
-            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0f172a; /* 深藍色質感背景 */
+            color: #f8fafc;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
+
+        /* 頂部固定搜尋列 (手機滑動時會黏在最上面) */
         header {
-            background-color: #1e1e1e;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid #e53935; /* 紅色點綴 */
+            position: sticky;
+            top: 0;
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 15px 20px;
+            z-index: 100;
+            border-bottom: 1px solid #334155;
         }
+        
         header h1 {
-            margin: 0;
-            font-size: 28px;
-            letter-spacing: 2px;
-        }
-        /* 網格佈局：讓卡牌自動適應手機與電腦螢幕 */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        /* 卡片設計 */
-        .card {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            padding: 15px;
+            margin: 0 0 15px 0;
+            font-size: 20px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease;
         }
-        .card:hover {
-            transform: translateY(-5px); /* 滑鼠游標移過去會浮起來 */
-        }
-        .card-image {
+
+        .search-box {
             width: 100%;
-            height: 350px;
-            background-color: #333;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 20px;
+            border: none;
+            background-color: #1e293b;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .search-box::placeholder { color: #94a3b8; }
+
+        /* 卡牌展示區 (手機預設雙欄) */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 15px;
+            padding-bottom: 80px; /* 留一點底部空間 */
+        }
+
+        /* 單張卡片設計 */
+        .card {
+            background-color: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .card-img-placeholder {
+            width: 100%;
+            aspect-ratio: 63 / 88; /* 標準寶可夢/PTCG卡牌比例 */
+            background-color: #334155;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #777;
-            /* 未來這裡會換成真正的卡牌圖片網址 */
+            color: #64748b;
+            font-size: 14px;
         }
-        .card-title {
-            font-size: 18px;
+
+        .card-info {
+            padding: 12px;
+        }
+
+        .card-name {
+            font-size: 15px;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 0 0 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* 字太長會變... */
         }
+
+        .card-tags {
+            font-size: 12px;
+            color: #38bdf8;
+            margin-bottom: 5px;
+        }
+
         .card-price {
-            color: #e53935;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        /* 購買按鈕 */
-        .buy-btn {
-            background-color: #e53935;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
             font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-        .buy-btn:hover {
-            background-color: #ff5252;
+            color: #fbbf24;
+            font-weight: bold;
+            margin: 0;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🔥 TCG 珍稀卡牌專賣</h1>
-        <p>最新彈、異圖、高罕貴度卡牌都在這</p>
+        <h1>🌟 TCG 線上展示圖鑑</h1>
+        <input type="text" id="searchInput" class="search-box" placeholder="搜尋卡名、彈數或罕貴度..." onkeyup="filterCards()">
     </header>
 
-    <div class="container">
-        <div class="card">
-            <div class="card-image">圖片位置</div>
-            <div class="card-title">噴火龍 ex (SAR)</div>
-            <div class="card-price">NT$ 3,500</div>
-            <button class="buy-btn" onclick="alert('已將 噴火龍 ex 加入購物車！')">加入購物車</button>
-        </div>
+    <div class="gallery" id="cardGallery"></div>
 
-        <div class="card">
-            <div class="card-image">圖片位置</div>
-            <div class="card-title">莉莉艾 (SR)</div>
-            <div class="card-price">NT$ 12,000</div>
-            <button class="buy-btn" onclick="alert('已將 莉莉艾 加入購物車！')">加入購物車</button>
-        </div>
+    <script>
+        // 【你的卡牌資料庫】
+        // 以後只要在這裡複製貼上，就能新增卡片，不用管 HTML
+        const cardData = [
+            { name: "噴火龍 ex", set: "SV4a", rarity: "SAR", price: "HK$ 850" },
+            { name: "莉莉艾", set: "AS5b", rarity: "SR", price: "HK$ 3,200" },
+            { name: "皮卡丘", set: "SV2a", rarity: "AR", price: "HK$ 150" },
+            { name: "超夢 VSTAR", set: "S12a", rarity: "UR", price: "HK$ 280" },
+            { name: "奇樹", set: "SV2D", rarity: "SAR", price: "HK$ 900" },
+            { name: "夢幻 ex", set: "SV2a", rarity: "SAR", price: "HK$ 450" }
+        ];
 
-        <div class="card">
-            <div class="card-image">圖片位置</div>
-            <div class="card-title">皮卡丘 AR</div>
-            <div class="card-price">NT$ 800</div>
-            <button class="buy-btn" onclick="alert('已將 皮卡丘 AR 加入購物車！')">加入購物車</button>
-        </div>
-        
-        <div class="card">
-            <div class="card-image">圖片位置</div>
-            <div class="card-title">超夢 VSTAR (UR)</div>
-            <div class="card-price">NT$ 1,200</div>
-            <button class="buy-btn" onclick="alert('已將 超夢 VSTAR 加入購物車！')">加入購物車</button>
-        </div>
-    </div>
+        const gallery = document.getElementById('cardGallery');
+
+        // 生成卡牌畫面的功能
+        function renderCards(cards) {
+            gallery.innerHTML = ''; // 清空畫面
+            cards.forEach(card => {
+                const cardHTML = `
+                    <div class="card">
+                        <div class="card-img-placeholder">圖片位置</div>
+                        <div class="card-info">
+                            <p class="card-name">${card.name}</p>
+                            <p class="card-tags">[${card.set}] ${card.rarity}</p>
+                            <p class="card-price">${card.price}</p>
+                        </div>
+                    </div>
+                `;
+                gallery.innerHTML += cardHTML;
+            });
+        }
+
+        // 搜尋過濾功能
+        function filterCards() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = cardData.filter(card => 
+                card.name.toLowerCase().includes(keyword) || 
+                card.set.toLowerCase().includes(keyword) || 
+                card.rarity.toLowerCase().includes(keyword)
+            );
+            renderCards(filtered);
+        }
+
+        // 網頁一打開先載入所有卡片
+        renderCards(cardData);
+    </script>
 
 </body>
 </html>
