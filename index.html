@@ -49,28 +49,25 @@
         }
         .search-box::placeholder { color: #94a3b8; }
 
-        /* --- 高級分類按鈕區塊 (完美還原用戶圖片風格) --- */
+        /* --- 分類按鈕區塊 --- */
         .filter-row {
             display: flex;
             align-items: center;
             margin-bottom: 8px;
-            /* 讓按鈕在手機上可以橫向滑動 */
             overflow-x: auto; 
             white-space: nowrap;
-            padding-bottom: 3px; /* 留一點空間給滑動條（雖然隱藏了） */
+            padding-bottom: 3px;
         }
-        .filter-row::-webkit-scrollbar { display: none; } /* 隱藏滑動條 */
+        .filter-row::-webkit-scrollbar { display: none; }
         
-        /* 「─ 顏色」這類型的標籤 */
         .row-label {
             font-size: 13px;
             color: #94a3b8;
             margin-right: 10px;
             font-weight: bold;
-            flex-shrink: 0; /* 防止標籤被擠壓 */
+            flex-shrink: 0;
         }
 
-        /* 基礎按鈕樣式 (矩形、白框) */
         .filter-btn {
             background-color: transparent;
             color: #f8fafc;
@@ -81,26 +78,24 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.15s;
-            border-radius: 0; /* 方正矩形 */
+            border-radius: 0;
             flex-shrink: 0;
         }
         
-        /* 選中狀態 (白底黑字) */
         .filter-btn.active {
             background-color: #f8fafc;
             color: #0c111d; 
         }
 
-        /* --- 卡牌展示區 (手機雙欄網格) --- */
+        /* --- 卡牌展示區 --- */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 12px;
             padding: 12px;
-            padding-bottom: 80px; /* 留底部空間 */
+            padding-bottom: 80px;
         }
 
-        /* 單張卡片結構 */
         .card {
             background-color: #1e293b;
             border-radius: 10px;
@@ -111,14 +106,12 @@
             transition: transform 0.2s;
         }
         
-        /* 手機上點擊卡片會有微微浮起效果 */
         .card:active { transform: scale(1.02); }
 
-        /* 實體照片位置 (預設為灰色) */
         .card-img {
             width: 100%;
-            aspect-ratio: 63 / 88; /* 航海王卡牌標準比例 */
-            object-fit: cover; /* 確保照片填滿，不變形 */
+            aspect-ratio: 63 / 88;
+            object-fit: cover;
             background-color: #334155;
             border-bottom: 1px solid #121722;
         }
@@ -136,7 +129,7 @@
             font-weight: bold;
             margin: 0 0 3px 0;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* 卡名最多兩行 */
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             color: #f1f5f9;
@@ -148,7 +141,6 @@
             margin-bottom: 6px;
         }
         
-        /* 卡片上顯示的顏色標籤 */
         .color-tag {
             display: inline-block;
             padding: 1px 4px;
@@ -158,24 +150,22 @@
             color: #fff;
         }
         
-        /* 不同顏色的背景色 */
         .tag-red { background-color: #ef4444; }
         .tag-green { background-color: #22c55e; }
         .tag-blue { background-color: #3b82f6; }
         .tag-purple { background-color: #a855f7; }
         .tag-black { background-color: #111827; border: 1px solid #4b5563; }
         .tag-yellow { background-color: #eab308; color: #000; }
-        .tag-multi { background-color: #64748b; } /* 多色暫用灰色 */
+        .tag-multi { background-color: #64748b; }
 
         .card-price {
             font-size: 15px;
-            color: #fbbf24; /* 價格金色 */
+            color: #fbbf24;
             font-weight: 800;
             margin: 0;
             text-align: right;
         }
         
-        /* 無資料時的提示 */
         .no-results {
             grid-column: 1 / -1;
             text-align: center;
@@ -190,7 +180,7 @@
     <header>
         <h1>🏴‍☠️ ONE PIECE 展示圖鑑</h1>
         
-        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名或卡號..." onkeyup="filterCards()">
+        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號、罕貴度 (SEC/SR)..." onkeyup="filterCards()">
         
         <div class="filter-row" id="colorFilters">
             <span class="row-label">─ 顏色</span>
@@ -214,18 +204,15 @@
         </div>
     </header>
 
-    <div class="gallery" id="cardGallery">
-        </div>
+    <div class="gallery" id="cardGallery"></div>
 
     <script>
+        let activeColor = 'ALL';
+        let activeType = 'ALL';
+
         /* ==========================================
            【航海王卡牌實體資料庫】
-           ==========================================
-           在這裡新增你的卡片！
-           - image: 填入你上傳到 GitHub 的照片檔名 (例如 "luffy_op05.jpg")
-           - color: 必須填寫紅、綠、藍、紫、黑、黃、多色 
-           - type: 必須填寫領航、角色、舞台、事件
-        */
+           ========================================== */
         const cardData = [
             { name: "蒙其·D·路飛 (漫畫異圖)", code: "OP05-119", rarity: "SEC", price: "HK$ 3,200", image: "luffy_op05.jpg", color: "紅", type: "角色" },
             { name: "尤斯塔斯·基德 (原畫)", code: "OP01-051", rarity: "SR", price: "HK$ 150", image: "kid_op01.jpg", color: "綠", type: "角色" },
@@ -237,15 +224,10 @@
             { name: "哥爾·D·羅傑 (SP)", code: "OP06-119", rarity: "SEC", price: "詢價", image: "roger_op06.jpg", color: "多色", type: "角色" }
         ];
 
-        // 目前選中的篩選條件
-        let activeColor = 'ALL';
-        let activeType = 'ALL';
-
         const gallery = document.getElementById('cardGallery');
 
-        // --- 功能：把卡片資料變成 HTML 畫面 ---
         function renderCards(cards) {
-            gallery.innerHTML = ''; // 清空畫面
+            gallery.innerHTML = '';
             
             if (cards.length === 0) {
                 gallery.innerHTML = '<div class="no-results">沒有找到符合條件的卡片 🏴‍☠️</div>';
@@ -253,7 +235,6 @@
             }
 
             cards.forEach(card => {
-                // 根據顏色獲取對應的 tag 樣式
                 const colorMap = { '紅':'tag-red', '綠':'tag-green', '藍':'tag-blue', '紫':'tag-purple', '黑':'tag-black', '黃':'tag-yellow', '多色':'tag-multi' };
                 const colorClass = colorMap[card.color] || '';
 
@@ -276,54 +257,50 @@
             });
         }
 
-        // --- 功能：處理按鈕點擊事件 ---
         function setupFilterButtons() {
-            // 處理顏色按鈕
             document.querySelectorAll('#colorFilters .filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('#colorFilters .filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     activeColor = btn.getAttribute('data-color');
-                    filterCards(); // 點擊後立刻重新篩選
+                    filterCards();
                 });
             });
 
-            // 處理種類按鈕
             document.querySelectorAll('#typeFilters .filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     activeType = btn.getAttribute('data-type');
-                    filterCards(); // 點擊後立刻重新篩選
+                    filterCards();
                 });
             });
         }
 
-        // --- 核心核心核心核心：組合筛选邏輯 ---
+        // --- 核心過濾邏輯（已升級：包含罕貴度搜尋） ---
         function filterCards() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             
-            // 同時檢查 搜尋框 + 顏色按鈕 + 種類按鈕
             const filtered = cardData.filter(card => {
-                // 1. 檢查搜尋 (卡名或卡號)
-                const matchSearch = card.name.toLowerCase().includes(keyword) || card.code.toLowerCase().includes(keyword);
+                // 1. 🔍 升級這裡：同時檢查卡名、卡號、以及罕貴度 (rarity)
+                const matchSearch = card.name.toLowerCase().includes(keyword) || 
+                                     card.code.toLowerCase().includes(keyword) ||
+                                     card.rarity.toLowerCase().includes(keyword);
                 
-                // 2. 檢查顏色 (如果選 ALL 則全部符合，否則要完全匹配)
+                // 2. 🔴 檢查顏色
                 const matchColor = (activeColor === 'ALL') || (card.color === activeColor);
                 
-                // 3. 檢查種類 (如果選 ALL 則全部符合，否則要完全匹配)
+                // 3. 🃏 檢查種類
                 const matchType = (activeType === 'ALL') || (card.type === activeType);
 
-                // 必須「三者皆符合」才顯示
                 return matchSearch && matchColor && matchType;
             });
             
             renderCards(filtered);
         }
 
-        // --- 網頁啟動 ---
-        setupFilterButtons(); // 激活按鈕點擊功能
-        renderCards(cardData); // 預設載入所有卡片
+        setupFilterButtons();
+        renderCards(cardData);
     </script>
 
 </body>
