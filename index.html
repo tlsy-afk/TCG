@@ -3,40 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>我的 TCG 線上卡本</title>
+    <title>航海王 TCG 線上卡本</title>
     <style>
-        /* 手機版基礎設定 */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #0f172a; /* 深藍色質感背景 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #0c111d; /* 更深邃的海洋暗色調 */
             color: #f8fafc;
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 頂部固定搜尋列 (手機滑動時會黏在最上面) */
         header {
             position: sticky;
             top: 0;
-            background-color: rgba(15, 23, 42, 0.95);
+            background-color: rgba(12, 17, 29, 0.95);
             backdrop-filter: blur(8px);
             padding: 15px 20px;
             z-index: 100;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid #1e293b;
         }
         
         header h1 {
-            margin: 0 0 15px 0;
+            margin: 0 0 12px 0;
             font-size: 20px;
             text-align: center;
+            color: #38bdf8; /* 航海王藍色科技感 */
         }
 
         .search-box {
             width: 100%;
             padding: 12px 15px;
             border-radius: 20px;
-            border: none;
+            border: 1px solid #334155;
             background-color: #1e293b;
             color: white;
             font-size: 16px;
@@ -45,55 +44,57 @@
         }
         .search-box::placeholder { color: #94a3b8; }
 
-        /* 卡牌展示區 (手機預設雙欄) */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            padding: 15px;
-            padding-bottom: 80px; /* 留一點底部空間 */
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+            padding: 12px;
+            padding-bottom: 80px;
         }
 
-        /* 單張卡片設計 */
         .card {
             background-color: #1e293b;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
         }
 
-        .card-img-placeholder {
+        /* 實體卡片圖片設定 */
+        .card-img {
             width: 100%;
-            aspect-ratio: 63 / 88; /* 標準寶可夢/PTCG卡牌比例 */
-            background-color: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            font-size: 14px;
+            aspect-ratio: 63 / 88; /* 完美符合航海王卡牌比例 */
+            object-fit: cover; /* 確保圖片填滿區域不變形 */
+            background-color: #0f172a;
         }
 
         .card-info {
-            padding: 12px;
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card-name {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
-            margin: 0 0 5px 0;
-            white-space: nowrap;
+            margin: 0 0 4px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 最多顯示兩行名稱 */
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            text-overflow: ellipsis; /* 字太長會變... */
         }
 
         .card-tags {
-            font-size: 12px;
+            font-size: 11px;
             color: #38bdf8;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .card-price {
-            font-size: 16px;
+            font-size: 15px;
             color: #fbbf24;
             font-weight: bold;
             margin: 0;
@@ -103,36 +104,37 @@
 <body>
 
     <header>
-        <h1>🌟 TCG 線上展示圖鑑</h1>
-        <input type="text" id="searchInput" class="search-box" placeholder="搜尋卡名、彈數或罕貴度..." onkeyup="filterCards()">
+        <h1>🏴‍☠️ ONE PIECE TCG 線上圖鑑</h1>
+        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色、卡號、罕貴度..." onkeyup="filterCards()">
     </header>
 
     <div class="gallery" id="cardGallery"></div>
 
     <script>
-        // 【你的卡牌資料庫】
-        // 以後只要在這裡複製貼上，就能新增卡片，不用管 HTML
+        // 【航海王卡牌資料庫】
+        // image 欄位填入你上傳到 GitHub 的照片檔名
         const cardData = [
-            { name: "噴火龍 ex", set: "SV4a", rarity: "SAR", price: "HK$ 850" },
-            { name: "莉莉艾", set: "AS5b", rarity: "SR", price: "HK$ 3,200" },
-            { name: "皮卡丘", set: "SV2a", rarity: "AR", price: "HK$ 150" },
-            { name: "超夢 VSTAR", set: "S12a", rarity: "UR", price: "HK$ 280" },
-            { name: "奇樹", set: "SV2D", rarity: "SAR", price: "HK$ 900" },
-            { name: "夢幻 ex", set: "SV2a", rarity: "SAR", price: "HK$ 450" }
+            { name: "蒙其·D·路飛 (漫畫異圖)", code: "OP05-119", rarity: "SEC", price: "詢價/暫存", image: "luffy.jpg" },
+            { name: "波特卡斯·D·艾斯", code: "OP02-013", rarity: "SR", price: "HK$ 120", image: "ace.jpg" },
+            { name: "羅羅亞·索隆", code: "OP01-025", rarity: "R", price: "HK$ 45", image: "zoro.jpg" },
+            { name: "香克斯 (漫畫異圖)", code: "OP01-120", rarity: "SEC", price: "詢價/聯繫", image: "shanks.jpg" },
+            { name: "大和", code: "OP01-121", rarity: "SEC", price: "HK$ 180", image: "yamato.jpg" },
+            { name: "薩波", code: "OP04-083", rarity: "SR", price: "HK$ 60", image: "sabo.jpg" }
         ];
 
         const gallery = document.getElementById('cardGallery');
 
-        // 生成卡牌畫面的功能
         function renderCards(cards) {
-            gallery.innerHTML = ''; // 清空畫面
+            gallery.innerHTML = '';
             cards.forEach(card => {
                 const cardHTML = `
                     <div class="card">
-                        <div class="card-img-placeholder">圖片位置</div>
+                        <img src="${card.image}" class="card-img" alt="${card.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x420/1e293b/ffffff?text=No+Image';">
                         <div class="card-info">
-                            <p class="card-name">${card.name}</p>
-                            <p class="card-tags">[${card.set}] ${card.rarity}</p>
+                            <div>
+                                <p class="card-name">${card.name}</p>
+                                <p class="card-tags">${card.code} · ${card.rarity}</p>
+                            </div>
                             <p class="card-price">${card.price}</p>
                         </div>
                     </div>
@@ -141,18 +143,16 @@
             });
         }
 
-        // 搜尋過濾功能
         function filterCards() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             const filtered = cardData.filter(card => 
                 card.name.toLowerCase().includes(keyword) || 
-                card.set.toLowerCase().includes(keyword) || 
+                card.code.toLowerCase().includes(keyword) || 
                 card.rarity.toLowerCase().includes(keyword)
             );
             renderCards(filtered);
         }
 
-        // 網頁一打開先載入所有卡片
         renderCards(cardData);
     </script>
 
