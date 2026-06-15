@@ -64,32 +64,41 @@
         <div class="loading">資料載入中... 🏴‍☠️</div>
     </div>
 
-    <script>
+<script>
         let activeColor = 'ALL';
         let activeType = 'ALL';
-        let cardData = []; // 資料現在會從 Google 表格載入，所以這裡先清空
+        let cardData = []; 
 
-        // 👇 【把這裡換成你剛才複製的 Google 試算表 CSV 網址】 👇
+        // 你的 Google 試算表 CSV 網址
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRs93U82XZB3cfiP333BzJYlig0WgzXaqhhOohP0qtNmi0aoB6fxZirLbdVVTTC4NFHL5Xwnv17ZPrr/pub?output=csv'; 
 
         const gallery = document.getElementById('cardGallery');
 
-        // 自動去抓取 Google 表格資料
         Papa.parse(SHEET_CSV_URL, {
             download: true,
-            header: true, // 將第一列作為資料標籤
+            header: true,
+            // 💡 新增防呆機制：自動把表格標題轉小寫、去除多餘空白
+            transformHeader: function(header) { 
+                return header.trim().toLowerCase(); 
+            },
             complete: function(results) {
                 // 過濾掉空白行
                 cardData = results.data.filter(card => card.name && card.name.trim() !== "");
+                
+                // 💡 新增詳細錯誤提示：如果真的沒抓到資料，會告訴你原因
+                if (cardData.length === 0) {
+                    gallery.innerHTML = '<div class="no-results">有連上 Google 表格，但找不到有效的卡片資料 🏴‍☠️<br><br>請檢查：<br>1. 試算表第一列是否為英文標題 (name, code...)<br>2. 試算表共用權限是否已設定為「知道連結的任何人」</div>';
+                    return;
+                }
+
                 setupFilterButtons();
-                renderCards(cardData);
+                filterCards(); // 資料載入成功後，直接進行第一次過濾並顯示
             },
             error: function(error) {
-                gallery.innerHTML = '<div class="no-results">資料載入失敗，請檢查表格網址。</div>';
+                gallery.innerHTML = '<div class="no-results">Google 表格連線失敗，請檢查網址是否正確。🏴‍☠️</div>';
             }
         });
 
-        // --- 以下顯示邏輯與過濾邏輯完全不變 ---
         function renderCards(cards) {
             gallery.innerHTML = '';
             
