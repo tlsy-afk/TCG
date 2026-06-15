@@ -6,17 +6,23 @@
     <title>ONE PIECE TCG</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        /* ... (保留原本所有的 CSS 樣式，完全不用動) ... */
+        /* --- 基礎設定與配色 --- */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0c111d; color: #f8fafc; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         header { position: sticky; top: 0; background-color: rgba(12, 17, 29, 0.98); backdrop-filter: blur(8px); padding: 12px 15px; z-index: 100; border-bottom: 1px solid #1e293b; }
         header h1 { margin: 0 0 10px 0; font-size: 18px; text-align: center; color: #38bdf8; font-weight: 900; }
+        
         .search-box { width: 100%; padding: 10px 15px; border-radius: 6px; border: 1px solid #334155; background-color: #1e293b; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 12px; }
         .search-box::placeholder { color: #94a3b8; }
+        
+        /* 橫向滑動分類列 */
         .filter-row { display: flex; align-items: center; margin-bottom: 8px; overflow-x: auto; white-space: nowrap; padding-bottom: 3px; }
         .filter-row::-webkit-scrollbar { display: none; }
-        .row-label { font-size: 13px; color: #94a3b8; margin-right: 10px; font-weight: bold; flex-shrink: 0; }
+        .row-label { font-size: 13px; color: #94a3b8; margin-right: 10px; font-weight: bold; flex-shrink: 0; width: 65px; /* 固定寬度讓排版對齊 */ }
+        
         .filter-btn { background-color: transparent; color: #f8fafc; border: 1px solid #f8fafc; padding: 5px 12px; margin-right: 6px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.15s; border-radius: 0; flex-shrink: 0; }
         .filter-btn.active { background-color: #f8fafc; color: #0c111d; }
+        
+        /* 卡片網格與樣式 */
         .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 12px; padding-bottom: 80px; }
         .card { background-color: #1e293b; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.4); display: flex; flex-direction: column; transition: transform 0.2s; }
         .card:active { transform: scale(1.02); }
@@ -24,11 +30,13 @@
         .card-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .card-name { font-size: 13px; font-weight: bold; margin: 0 0 3px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #f1f5f9; }
         .card-meta { font-size: 11px; color: #94a3b8; margin-bottom: 6px; }
+        
+        /* 顏色標籤 */
         .color-tag { display: inline-block; padding: 1px 4px; border-radius: 3px; margin-right: 3px; font-weight: bold; color: #fff; }
         .tag-red { background-color: #ef4444; } .tag-green { background-color: #22c55e; } .tag-blue { background-color: #3b82f6; } .tag-purple { background-color: #a855f7; } .tag-black { background-color: #111827; border: 1px solid #4b5563; } .tag-yellow { background-color: #eab308; color: #000; } .tag-multi { background-color: #64748b; }
+        
         .card-price { font-size: 15px; color: #fbbf24; font-weight: 800; margin: 0; text-align: right; }
         .no-results { grid-column: 1 / -1; text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
-        /* 載入中動畫 */
         .loading { grid-column: 1 / -1; text-align: center; padding: 50px; color: #38bdf8; font-size: 18px; font-weight: bold;}
     </style>
 </head>
@@ -36,8 +44,37 @@
 
     <header>
         <h1>🏴‍☠️ ONE PIECE TCG</h1>
-        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號、稀有度 (SEC/SR)..." onkeyup="filterCards()">
+        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號..." onkeyup="filterCards()">
         
+        <div class="filter-row" id="packFilters">
+            <span class="row-label">─ 卡包系列</span>
+            <button class="filter-btn active" data-pack="ALL">ALL</button>
+            <button class="filter-btn" data-pack="OP01">OP01</button>
+            <button class="filter-btn" data-pack="OP02">OP02</button>
+            <button class="filter-btn" data-pack="OP03">OP03</button>
+            <button class="filter-btn" data-pack="OP04">OP04</button>
+            <button class="filter-btn" data-pack="OP05">OP05</button>
+            <button class="filter-btn" data-pack="OP06">OP06</button>
+            <button class="filter-btn" data-pack="OP07">OP07</button>
+            <button class="filter-btn" data-pack="OP08">OP08</button>
+            <button class="filter-btn" data-pack="EB01">EB01</button>
+            <button class="filter-btn" data-pack="ST">ST(預組)</button>
+        </div>
+
+        <div class="filter-row" id="rarityFilters">
+            <span class="row-label">─ 稀有度</span>
+            <button class="filter-btn active" data-rarity="ALL">ALL</button>
+            <button class="filter-btn" data-rarity="L">L</button>
+            <button class="filter-btn" data-rarity="SEC">SEC</button>
+            <button class="filter-btn" data-rarity="SR">SR</button>
+            <button class="filter-btn" data-rarity="R">R</button>
+            <button class="filter-btn" data-rarity="UC">UC</button>
+            <button class="filter-btn" data-rarity="C">C</button>
+            <button class="filter-btn" data-rarity="SP">SP</button>
+            <button class="filter-btn" data-rarity="P">P</button>
+            <button class="filter-btn" data-rarity="TR">TR</button>
+        </div>
+
         <div class="filter-row" id="colorFilters">
             <span class="row-label">─ 顏色</span>
             <button class="filter-btn active" data-color="ALL">ALL</button>
@@ -64,35 +101,33 @@
         <div class="loading">資料載入中... 🏴‍☠️</div>
     </div>
 
-<script>
+    <script>
         let activeColor = 'ALL';
         let activeType = 'ALL';
+        let activePack = 'ALL';   // 新增卡包狀態
+        let activeRarity = 'ALL'; // 新增稀有度狀態
         let cardData = []; 
 
-        // 你的 Google 試算表 CSV 網址
+        // 👇 【這裡保留你之前設定好的 Google 試算表 CSV 網址】 👇
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRs93U82XZB3cfiP333BzJYlig0WgzXaqhhOohP0qtNmi0aoB6fxZirLbdVVTTC4NFHL5Xwnv17ZPrr/pub?output=csv'; 
+        const noCacheUrl = SHEET_CSV_URL + '&t=' + new Date().getTime();
 
         const gallery = document.getElementById('cardGallery');
 
-        Papa.parse(SHEET_CSV_URL, {
+        Papa.parse(noCacheUrl, {
             download: true,
             header: true,
-            // 💡 新增防呆機制：自動把表格標題轉小寫、去除多餘空白
-            transformHeader: function(header) { 
-                return header.trim().toLowerCase(); 
-            },
+            transformHeader: function(header) { return header.trim().toLowerCase(); },
             complete: function(results) {
-                // 過濾掉空白行
                 cardData = results.data.filter(card => card.name && card.name.trim() !== "");
                 
-                // 💡 新增詳細錯誤提示：如果真的沒抓到資料，會告訴你原因
                 if (cardData.length === 0) {
-                    gallery.innerHTML = '<div class="no-results">有連上 Google 表格，但找不到有效的卡片資料 🏴‍☠️<br><br>請檢查：<br>1. 試算表第一列是否為英文標題 (name, code...)<br>2. 試算表共用權限是否已設定為「知道連結的任何人」</div>';
+                    gallery.innerHTML = '<div class="no-results">有連上 Google 表格，但找不到有效的卡片資料 🏴‍☠️</div>';
                     return;
                 }
 
                 setupFilterButtons();
-                filterCards(); // 資料載入成功後，直接進行第一次過濾並顯示
+                filterCards(); 
             },
             error: function(error) {
                 gallery.innerHTML = '<div class="no-results">Google 表格連線失敗，請檢查網址是否正確。🏴‍☠️</div>';
@@ -101,7 +136,6 @@
 
         function renderCards(cards) {
             gallery.innerHTML = '';
-            
             if (cards.length === 0) {
                 gallery.innerHTML = '<div class="no-results">沒有找到符合條件的卡片 🏴‍☠️</div>';
                 return;
@@ -138,7 +172,9 @@
             });
         }
 
+        // --- 綁定所有按鈕的點擊事件 ---
         function setupFilterButtons() {
+            // 綁定顏色
             document.querySelectorAll('#colorFilters .filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('#colorFilters .filter-btn').forEach(b => b.classList.remove('active'));
@@ -148,6 +184,7 @@
                 });
             });
 
+            // 綁定卡片種類
             document.querySelectorAll('#typeFilters .filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('active'));
@@ -156,30 +193,59 @@
                     filterCards();
                 });
             });
+
+            // 綁定卡包 (新增)
+            document.querySelectorAll('#packFilters .filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('#packFilters .filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activePack = btn.getAttribute('data-pack');
+                    filterCards();
+                });
+            });
+
+            // 綁定稀有度 (新增)
+            document.querySelectorAll('#rarityFilters .filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('#rarityFilters .filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeRarity = btn.getAttribute('data-rarity');
+                    filterCards();
+                });
+            });
         }
 
+        // --- 核心過濾邏輯（包含四重過濾） ---
         function filterCards() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             
             const filtered = cardData.filter(card => {
                 const searchName = card.name ? card.name.toLowerCase() : '';
                 const searchCode = card.code ? card.code.toLowerCase() : '';
-                const searchRarity = card.rarity ? card.rarity.toLowerCase() : '';
+                const searchRarity = card.rarity ? card.rarity.trim().toUpperCase() : '';
                 
-                const matchSearch = searchName.includes(keyword) || 
-                                    searchCode.includes(keyword) ||
-                                    searchRarity.includes(keyword);
+                // 1. 搜尋框比對
+                const matchSearch = searchName.includes(keyword) || searchCode.includes(keyword);
                 
+                // 2. 顏色比對
                 const cardColor = card.color || '';
                 const isMultiColorCard = cardColor.includes(','); 
-                
                 const matchColor = (activeColor === 'ALL') || 
                                    (activeColor === '多色' && isMultiColorCard) || 
                                    (cardColor.includes(activeColor)); 
                 
+                // 3. 卡片種類比對
                 const matchType = (activeType === 'ALL') || (card.type === activeType);
 
-                return matchSearch && matchColor && matchType;
+                // 4. 卡包比對 (自動擷取卡號前綴，例如 OP01-001 包含 OP01)
+                // 若選 ST(預組)，只要卡號開頭是 ST 就符合
+                const matchPack = (activePack === 'ALL') || (searchCode.startsWith(activePack.toLowerCase()));
+
+                // 5. 稀有度比對 (精確比對，避免搜尋 R 時把 SR 和 TR 也算進去)
+                const matchRarity = (activeRarity === 'ALL') || (searchRarity === activeRarity);
+
+                // 必須「五個條件」同時成立才會顯示
+                return matchSearch && matchColor && matchType && matchPack && matchRarity;
             });
             
             renderCards(filtered);
