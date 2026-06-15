@@ -178,7 +178,7 @@
 <body>
 
     <header>
-        <h1>🏴‍☠️ ONE PIECE </h1>
+        <h1>🏴‍☠️ ONE PIECE TCG</h1>
         
         <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號、稀有度 (SEC/SR)..." onkeyup="filterCards()">
         
@@ -217,8 +217,9 @@
           // ===== 紅色 (Red) OP01-001 ~ OP01-029 =====
           { name: "羅羅亞・索隆", code: "OP01-001", rarity: "L", price: "HK$ 50", image: "OP01-001.png", color: "紅", type: "領航" },
           { name: "羅羅亞・索隆(異圖卡)", code: "OP01-001_p1", rarity: "L", price: "HK$ 50", image: "OP01-001_p1.png", color: "紅", type: "領航" },
-          { name: "托拉法爾加・羅", code: "OP01-002", rarity: "L", price: "HK$ 80", image: "OP01-002.png", color: "多色", type: "領航" },
-          { name: "托拉法爾加・羅(異圖卡)", code: "OP01-002_p1", rarity: "L", price: "HK$ 80", image: "OP01-002_p1.png", color: "多色", type: "領航" },
+          // 💡 羅的顏色已改為 "紅,綠"，系統會自動判斷為多色
+          { name: "托拉法爾加・羅", code: "OP01-002", rarity: "L", price: "HK$ 80", image: "OP01-002.png", color: "紅,綠", type: "領航" },
+          { name: "托拉法爾加・羅(異圖卡)", code: "OP01-002_p1", rarity: "L", price: "HK$ 80", image: "OP01-002_p1.png", color: "紅,綠", type: "領航" },
           { name: "蒙其・D・魯夫", code: "OP01-003", rarity: "L", price: "HK$ 60", image: "OP01-003.png", color: "紅", type: "領航" },
           { name: "蒙其・D・魯夫(異圖卡)", code: "OP01-003_p1", rarity: "L", price: "HK$ 60", image: "OP01-003_p1.png", color: "紅", type: "領航" },
           { name: "烏索普", code: "OP01-004", rarity: "C", price: "HK$ 2", image: "OP01-004.png", color: "紅", type: "角色" },
@@ -247,13 +248,12 @@
           { name: "蒙其・D・魯夫", code: "OP01-024", rarity: "SR", price: "HK$ 40", image: "OP01-024.png", color: "紅", type: "角色" },
           { name: "蒙其・D・魯夫(異圖卡)", code: "OP01-024_p1", rarity: "SR", price: "HK$ 40", image: "OP01-024_p1.png", color: "紅", type: "角色" },
           { name: "羅羅亞・索隆", code: "OP01-025", rarity: "SR", price: "HK$ 100", image: "OP01-025.png", color: "紅", type: "角色" },
-          { name: "羅羅亞・索隆(異圖卡)", code: "OP01-025", rarity: "SR", price: "HK$ 100", image: "OP01-025_p1.png", color: "紅", type: "角色" },
+          { name: "羅羅亞・索隆(異圖卡)", code: "OP01-025_p1", rarity: "SR", price: "HK$ 100", image: "OP01-025_p1.png", color: "紅", type: "角色" },
           { name: "橡膠火拳槍", code: "OP01-026", rarity: "C", price: "HK$ 2", image: "OP01-026.png", color: "紅", type: "事件" },
           { name: "圓桌", code: "OP01-027", rarity: "C", price: "HK$ 2", image: "OP01-027.png", color: "紅", type: "事件" },
           { name: "必殺綠星霸王花", code: "OP01-028", rarity: "C", price: "HK$ 2", image: "OP01-028.png", color: "紅", type: "事件" },
           { name: "激射光束!!", code: "OP01-029", rarity: "UC", price: "HK$ 10", image: "OP01-029.png", color: "紅", type: "事件" },
-          { name: "兩年後!!!在夏波帝群島!!!", code: "OP01-30", rarity: "UC", price: "HK$ 10", image: "OP01-023.png", color: "紅", type: "事件" },
-         
+          { name: "兩年後!!!在夏波帝群島!!!", code: "OP01-030", rarity: "UC", price: "HK$ 10", image: "OP01-030.png", color: "紅", type: "事件" },
 
           // ===== 隱藏稀有 (Secret Rare) OP01-120 ~ OP01-121 =====
           { name: "傑克 (シャンクス)", code: "OP01-120", rarity: "SEC", price: "HK$ 200", image: "OP01-120.png", color: "紅", type: "角色" },
@@ -271,8 +271,17 @@
             }
 
             cards.forEach(card => {
-                const colorMap = { '紅':'tag-red', '綠':'tag-green', '藍':'tag-blue', '紫':'tag-purple', '黑':'tag-black', '黃':'tag-yellow', '多色':'tag-multi' };
-                const colorClass = colorMap[card.color] || '';
+                // --- 💡 這裡加回了「顯示為多色」的邏輯 ---
+                let displayColorName = card.color;
+                let displayColorClass = '';
+
+                if (card.color.includes(',')) {
+                    displayColorName = '多色';
+                    displayColorClass = 'tag-multi';
+                } else {
+                    const colorMap = { '紅':'tag-red', '綠':'tag-green', '藍':'tag-blue', '紫':'tag-purple', '黑':'tag-black', '黃':'tag-yellow' };
+                    displayColorClass = colorMap[card.color] || 'tag-multi';
+                }
 
                 const cardHTML = `
                     <div class="card">
@@ -281,7 +290,7 @@
                             <div>
                                 <p class="card-name">${card.name}</p>
                                 <p class="card-meta">
-                                    <span class="color-tag ${colorClass}">${card.color}</span>
+                                    <span class="color-tag ${displayColorClass}">${displayColorName}</span>
                                     ${card.code} · ${card.rarity} · ${card.type}
                                 </p>
                             </div>
@@ -321,7 +330,12 @@
                                      card.code.toLowerCase().includes(keyword) ||
                                      card.rarity.toLowerCase().includes(keyword);
                 
-                const matchColor = (activeColor === 'ALL') || (card.color === activeColor);
+                // --- 💡 這裡加回了「過濾多色」的邏輯 ---
+                const isMultiColorCard = card.color.includes(','); 
+                
+                const matchColor = (activeColor === 'ALL') || 
+                                   (activeColor === '多色' && isMultiColorCard) || 
+                                   (card.color.includes(activeColor)); 
                 
                 const matchType = (activeType === 'ALL') || (card.type === activeType);
 
