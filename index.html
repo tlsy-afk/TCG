@@ -14,7 +14,6 @@
         .search-box { width: 100%; padding: 10px 15px; border-radius: 6px; border: 1px solid #334155; background-color: #1e293b; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 12px; }
         .search-box::placeholder { color: #94a3b8; }
         
-        /* 橫向滑動分類列 */
         .filter-row { display: flex; align-items: center; margin-bottom: 8px; overflow-x: auto; white-space: nowrap; padding-bottom: 3px; }
         .filter-row::-webkit-scrollbar { display: none; }
         .row-label { font-size: 13px; color: #94a3b8; margin-right: 10px; font-weight: bold; flex-shrink: 0; width: 65px; }
@@ -46,7 +45,7 @@
 
     <header>
         <h1>🏴‍☠️ ONE PIECE TCG</h1>
-        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號..." onkeyup="filterCards()">
+        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號..." oninput="filterCards()">
         
         <div class="filter-row" id="packFilters">
             <span class="row-label">─ 卡包系列</span>
@@ -110,7 +109,6 @@
         let activeRarity = 'ALL'; 
         let cardData = []; 
 
-        // 顏色十六進位對照表
         const colorHexMap = { 
             '紅': '#ef4444', 
             '綠': '#22c55e', 
@@ -120,7 +118,6 @@
             '黃': '#eab308' 
         };
 
-        // 💡 保留你的 Google 試算表 CSV 網址
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRs93U82XZB3cfiP333BzJYlig0WgzXaqhhOohP0qtNmi0aoB6fxZirLbdVVTTC4NFHL5Xwnv17ZPrr/pub?output=csv'; 
         const noCacheUrl = SHEET_CSV_URL + '&t=' + new Date().getTime();
 
@@ -146,55 +143,52 @@
             }
         });
 
+        // 🚀 核心優化點在此！
         function renderCards(cards) {
-            gallery.innerHTML = '';
             if (cards.length === 0) {
                 gallery.innerHTML = '<div class="no-results">沒有找到符合條件的卡片 🏴‍☠️</div>';
                 return;
             }
 
+            // 💡 魔法二：使用變數打包所有的 HTML，最後再一次性更新網頁，大幅減少畫面卡頓
+            let htmlContent = '';
+
             cards.forEach(card => {
                 let displayColorName = card.color ? card.color.trim() : '';
                 let tagStyle = '';
 
-                // --- 1. 處理雙拼色底色 ---
                 if (displayColorName.includes(',')) {
-                    // 如果是多色，把顏色拆開 (例如: "藍,紫")
                     const colors = displayColorName.split(',');
-                    const c1 = colorHexMap[colors[0].trim()] || '#64748b'; // 第一個顏色
-                    const c2 = colorHexMap[colors[1].trim()] || '#64748b'; // 第二個顏色
-                    
-                    // 💡 更改為斜向分色特效，135deg 使兩個顏色斜向各佔一半，保持銳利邊界
+                    const c1 = colorHexMap[colors[0].trim()] || '#64748b'; 
+                    const c2 = colorHexMap[colors[1].trim()] || '#64748b'; 
                     tagStyle = `background: linear-gradient(135deg, ${c1} 50%, ${c2} 50%); color: #fff;`;
                     displayColorName = '多色';
                 } else {
-                    // 單色處理
                     const c = colorHexMap[displayColorName] || '#64748b';
                     tagStyle = `background-color: ${c};`;
                     
                     if (displayColorName === '黃') {
-                        tagStyle += ' color: #000;'; // 黃底配黑字
+                        tagStyle += ' color: #000;'; 
                     } else if (displayColorName === '黑') {
-                        tagStyle += ' border: 1px solid #4b5563; color: #fff;'; // 黑底加上灰色邊框
+                        tagStyle += ' border: 1px solid #4b5563; color: #fff;'; 
                     } else {
                         tagStyle += ' color: #fff;';
                     }
                 }
 
-                // --- 2. 處理缺貨/無庫存判斷 (只採用方法 B) ---
                 let priceHTML = '';
-                // 僅當 stock 欄位存在且明確等於 '0' 時，才判定為缺貨
                 let isOutOfStock = (card.stock && card.stock.trim() === '0');
                 
                 if (isOutOfStock) {
-                    priceHTML = `<div class="out-of-stock">缺貨</div>`;
+                    priceHTML = `<div class="out-of-stock">沒有</div>`;
                 } else {
                     priceHTML = `<p class="card-price">${card.price || ''}</p>`;
                 }
 
-                const cardHTML = `
+                // 💡 魔法一：在 img 標籤加入 loading="lazy"，讓圖片滑到才載入
+                htmlContent += `
                     <div class="card">
-                        <img src="${card.image}" class="card-img" alt="${card.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x420/334155/ffffff?text=OP-TCG';">
+                        <img loading="lazy" src="${card.image}" class="card-img" alt="${card.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x420/334155/ffffff?text=OP-TCG';">
                         <div class="card-info">
                             <div>
                                 <p class="card-name">${card.name}</p>
@@ -209,11 +203,12 @@
                         </div>
                     </div>
                 `;
-                gallery.innerHTML += cardHTML;
             });
+
+            // 最後一次把所有內容貼上去
+            gallery.innerHTML = htmlContent;
         }
 
-        // --- 綁定所有按鈕的點擊事件 ---
         function setupFilterButtons() {
             document.querySelectorAll('#colorFilters .filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -252,7 +247,6 @@
             });
         }
 
-        // --- 核心過濾邏輯 ---
         function filterCards() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             
