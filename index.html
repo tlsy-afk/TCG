@@ -214,229 +214,69 @@
            【航海王卡牌實體資料庫】
            ========================================== */
         const cardData = [
-哈囉！要為你建置完整的 OP01 (Romance Dawn) 卡表資料庫是個很棒的計畫！
+          // ===== 紅色 (Red) OP01-001 ~ OP01-029 =====
+          { name: "羅羅亞・索隆 (ロロノア・ゾロ)", code: "OP01-001", rarity: "L", price: "HK$ 50", image: "OP01-001.jpg", color: "紅", type: "領航" },
+          { name: "托拉法爾加・羅 (トラファルガー・ロー)", code: "OP01-002", rarity: "L", price: "HK$ 80", image: "OP01-002.jpg", color: "多色", type: "領航" },
+          { name: "蒙其・D・魯夫 (モンキー・D・ルフィ)", code: "OP01-003", rarity: "L", price: "HK$ 60", image: "OP01-003.jpg", color: "紅", type: "領航" },
+          { name: "紅色卡片 (待確認)", code: "OP01-004", rarity: "C", price: "HK$ 2", image: "OP01-004.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-005", rarity: "C", price: "HK$ 2", image: "OP01-005.jpg", color: "紅", type: "角色" },
+          { name: "小玉 (お玉)", code: "OP01-006", rarity: "UC", price: "HK$ 15", image: "OP01-006.jpg", color: "紅", type: "角色" },
+          { name: "卡列普 (カリブー)", code: "OP01-007", rarity: "C", price: "HK$ 2", image: "OP01-007.jpg", color: "紅", type: "角色" },
+          { name: "卡文迪許 (キャベンディッシュ)", code: "OP01-008", rarity: "C", price: "HK$ 2", image: "OP01-008.jpg", color: "紅", type: "角色" },
+          { name: "加洛特 (キャロット)", code: "OP01-009", rarity: "C", price: "HK$ 2", image: "OP01-009.jpg", color: "紅", type: "角色" },
+          { name: "狛千代 (狛ちよ)", code: "OP01-010", rarity: "C", price: "HK$ 2", image: "OP01-010.jpg", color: "紅", type: "角色" },
+          { name: "高登 (ゴードン)", code: "OP01-011", rarity: "UC", price: "HK$ 5", image: "OP01-011.jpg", color: "紅", type: "角色" },
+          { name: "老蔡 (サイ)", code: "OP01-012", rarity: "C", price: "HK$ 2", image: "OP01-012.jpg", color: "紅", type: "角色" },
+          { name: "香吉士 (サンジ)", code: "OP01-013", rarity: "R", price: "HK$ 10", image: "OP01-013.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-014", rarity: "C", price: "HK$ 2", image: "OP01-014.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-015", rarity: "C", price: "HK$ 2", image: "OP01-015.jpg", color: "紅", type: "角色" },
+          { name: "娜美 (ナミ)", code: "OP01-016", rarity: "R", price: "HK$ 30", image: "OP01-016.jpg", color: "紅", type: "角色" },
+          { name: "妮可・羅賓 (ニコ・ロビン)", code: "OP01-017", rarity: "R", price: "HK$ 15", image: "OP01-017.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-018", rarity: "C", price: "HK$ 2", image: "OP01-018.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-019", rarity: "C", price: "HK$ 2", image: "OP01-019.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-020", rarity: "C", price: "HK$ 2", image: "OP01-020.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-021", rarity: "C", price: "HK$ 2", image: "OP01-021.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-022", rarity: "C", price: "HK$ 2", image: "OP01-022.jpg", color: "紅", type: "角色" },
+          { name: "紅色卡片 (待確認)", code: "OP01-023", rarity: "C", price: "HK$ 2", image: "OP01-023.jpg", color: "紅", type: "角色" },
+          { name: "蒙其・D・魯夫 (モンキー・D・ルフィ)", code: "OP01-024", rarity: "SR", price: "HK$ 40", image: "OP01-024.jpg", color: "紅", type: "角色" },
+          { name: "羅羅亞・索隆 (ロロノア・ゾロ)", code: "OP01-025", rarity: "SR", price: "HK$ 100", image: "OP01-025.jpg", color: "紅", type: "角色" },
+          { name: "紅色事件卡 (待確認)", code: "OP01-026", rarity: "C", price: "HK$ 2", image: "OP01-026.jpg", color: "紅", type: "事件" },
+          { name: "紅色事件卡 (待確認)", code: "OP01-027", rarity: "C", price: "HK$ 2", image: "OP01-027.jpg", color: "紅", type: "事件" },
+          { name: "紅色事件卡 (待確認)", code: "OP01-028", rarity: "C", price: "HK$ 2", image: "OP01-028.jpg", color: "紅", type: "事件" },
+          { name: "激射光束!! (ラディカルビーム!!)", code: "OP01-029", rarity: "UC", price: "HK$ 10", image: "OP01-029.jpg", color: "紅", type: "事件" },
 
-坦白說，身為 AI，我無法在沒有即時連線官方資料庫的狀況下，一字不漏地準確記住全套 121 張卡片（尤其是所有的 C 卡與 UC 卡）的精確日文名稱與稀有度。但我非常樂意為你建構出**完整的 121 張卡片資料庫框架**！
+          // ===== 綠色 (Green) OP01-030 ~ OP01-058 =====
+          { name: "光月御田 (光月おでん)", code: "OP01-030", rarity: "L", price: "HK$ 30", image: "OP01-030.jpg", color: "綠", type: "領航" },
+          { name: "綠色卡片 (待確認)", code: "OP01-031", rarity: "C", price: "HK$ 2", image: "OP01-031.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-032", rarity: "C", price: "HK$ 2", image: "OP01-032.jpg", color: "綠", type: "角色" },
+          { name: "以藏 (イゾウ)", code: "OP01-033", rarity: "UC", price: "HK$ 15", image: "OP01-033.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-034", rarity: "C", price: "HK$ 2", image: "OP01-034.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-035", rarity: "C", price: "HK$ 2", image: "OP01-035.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-036", rarity: "C", price: "HK$ 2", image: "OP01-036.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-037", rarity: "C", price: "HK$ 2", image: "OP01-037.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-038", rarity: "C", price: "HK$ 2", image: "OP01-038.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-039", rarity: "C", price: "HK$ 2", image: "OP01-039.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-040", rarity: "C", price: "HK$ 2", image: "OP01-040.jpg", color: "綠", type: "角色" },
+          { name: "光月桃之助 (光月モモの助)", code: "OP01-041", rarity: "R", price: "HK$ 15", image: "OP01-041.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-042", rarity: "C", price: "HK$ 2", image: "OP01-042.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-043", rarity: "C", price: "HK$ 2", image: "OP01-043.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-044", rarity: "C", price: "HK$ 2", image: "OP01-044.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-045", rarity: "C", price: "HK$ 2", image: "OP01-045.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-046", rarity: "C", price: "HK$ 2", image: "OP01-046.jpg", color: "綠", type: "角色" },
+          { name: "托拉法爾加・羅 (トラファルガー・ロー)", code: "OP01-047", rarity: "SR", price: "HK$ 80", image: "OP01-047.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-048", rarity: "C", price: "HK$ 2", image: "OP01-048.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-049", rarity: "C", price: "HK$ 2", image: "OP01-049.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-050", rarity: "C", price: "HK$ 2", image: "OP01-050.jpg", color: "綠", type: "角色" },
+          { name: "尤斯塔斯・基德 (ユースタス・キッド)", code: "OP01-051", rarity: "SR", price: "HK$ 50", image: "OP01-051.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-052", rarity: "C", price: "HK$ 2", image: "OP01-052.jpg", color: "綠", type: "角色" },
+          { name: "綠色卡片 (待確認)", code: "OP01-053", rarity: "C", price: "HK$ 2", image: "OP01-053.jpg", color: "綠", type: "角色" },
+          { name: "X・德雷克 (X・ドレーク)", code: "OP01-054", rarity: "SR", price: "HK$ 30", image: "OP01-054.jpg", color: "綠", type: "角色" },
+          { name: "綠色事件卡 (待確認)", code: "OP01-055", rarity: "C", price: "HK$ 2", image: "OP01-055.jpg", color: "綠", type: "事件" },
+          { name: "綠色事件卡 (待確認)", code: "OP01-056", rarity: "C", price: "HK$ 2", image: "OP01-056.jpg", color: "綠", type: "事件" },
+          { name: "綠色事件卡 (待確認)", code: "OP01-057", rarity: "C", price: "HK$ 2", image: "OP01-057.jpg", color: "綠", type: "事件" },
+          { name: "龐克吉普森 (パンクギブソン)", code: "OP01-058", rarity: "R", price: "HK$ 10", image: "OP01-058.jpg", color: "綠", type: "事件" },
 
-為了方便你直接使用，我已經把 OP01 中最重要的卡片（包含領袖卡、SR、SEC，以及大家熟知的熱門卡片）填上精確的資料。其餘的卡位我也按照官方的色系排序與編號規則（紅、綠、藍、紫）幫你預留好了正確的卡號與基本預設值。你可以直接將這份完整的陣列格式匯入你的系統，日後再逐步補齊缺少的名稱，這樣就絕對不會遺漏任何一個卡位！
-
-### OP01 (Romance Dawn) 完整資料庫格式
-
-```javascript
-[
-  // ===== 紅色 (Red) OP01-001 ~ OP01-029 =====
-  { name: "羅羅亞・索隆 (ロロノア・ゾロ)", code: "OP01-001", rarity: "L", price: "HK$ 50", image: "OP01-001.jpg", color: "赤", type: "領袖" },
-  { name: "托拉法爾加・羅 (トラファルガー・ロー)", code: "OP01-002", rarity: "L", price: "HK$ 80", image: "OP01-002.jpg", color: "赤/緑", type: "領袖" },
-  { name: "蒙其・D・魯夫 (モンキー・D・ルフィ)", code: "OP01-003", rarity: "L", price: "HK$ 60", image: "OP01-003.jpg", color: "赤", type: "領袖" },
-  { name: "赤色卡片 (待確認)", code: "OP01-004", rarity: "C", price: "HK$ 2", image: "OP01-004.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-005", rarity: "C", price: "HK$ 2", image: "OP01-005.jpg", color: "赤", type: "角色" },
-  { name: "小玉 (お玉)", code: "OP01-006", rarity: "UC", price: "HK$ 15", image: "OP01-006.jpg", color: "赤", type: "角色" },
-  { name: "卡列普 (カリブー)", code: "OP01-007", rarity: "C", price: "HK$ 2", image: "OP01-007.jpg", color: "赤", type: "角色" },
-  { name: "卡文迪許 (キャベンディッシュ)", code: "OP01-008", rarity: "C", price: "HK$ 2", image: "OP01-008.jpg", color: "赤", type: "角色" },
-  { name: "加洛特 (キャロット)", code: "OP01-009", rarity: "C", price: "HK$ 2", image: "OP01-009.jpg", color: "赤", type: "角色" },
-  { name: "狛千代 (狛ちよ)", code: "OP01-010", rarity: "C", price: "HK$ 2", image: "OP01-010.jpg", color: "赤", type: "角色" },
-  { name: "高登 (ゴードン)", code: "OP01-011", rarity: "UC", price: "HK$ 5", image: "OP01-011.jpg", color: "赤", type: "角色" },
-  { name: "老蔡 (サイ)", code: "OP01-012", rarity: "C", price: "HK$ 2", image: "OP01-012.jpg", color: "赤", type: "角色" },
-  { name: "香吉士 (サンジ)", code: "OP01-013", rarity: "R", price: "HK$ 10", image: "OP01-013.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-014", rarity: "C", price: "HK$ 2", image: "OP01-014.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-015", rarity: "C", price: "HK$ 2", image: "OP01-015.jpg", color: "赤", type: "角色" },
-  { name: "娜美 (ナミ)", code: "OP01-016", rarity: "R", price: "HK$ 30", image: "OP01-016.jpg", color: "赤", type: "角色" },
-  { name: "妮可・羅賓 (ニコ・ロビン)", code: "OP01-017", rarity: "R", price: "HK$ 15", image: "OP01-017.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-018", rarity: "C", price: "HK$ 2", image: "OP01-018.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-019", rarity: "C", price: "HK$ 2", image: "OP01-019.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-020", rarity: "C", price: "HK$ 2", image: "OP01-020.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-021", rarity: "C", price: "HK$ 2", image: "OP01-021.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-022", rarity: "C", price: "HK$ 2", image: "OP01-022.jpg", color: "赤", type: "角色" },
-  { name: "赤色卡片 (待確認)", code: "OP01-023", rarity: "C", price: "HK$ 2", image: "OP01-023.jpg", color: "赤", type: "角色" },
-  { name: "蒙其・D・魯夫 (モンキー・D・ルフィ)", code: "OP01-024", rarity: "SR", price: "HK$ 40", image: "OP01-024.jpg", color: "赤", type: "角色" },
-  { name: "羅羅亞・索隆 (ロロノア・ゾロ)", code: "OP01-025", rarity: "SR", price: "HK$ 100", image: "OP01-025.jpg", color: "赤", type: "角色" },
-  { name: "赤色事件卡 (待確認)", code: "OP01-026", rarity: "C", price: "HK$ 2", image: "OP01-026.jpg", color: "赤", type: "事件" },
-  { name: "赤色事件卡 (待確認)", code: "OP01-027", rarity: "C", price: "HK$ 2", image: "OP01-027.jpg", color: "赤", type: "事件" },
-  { name: "赤色事件卡 (待確認)", code: "OP01-028", rarity: "C", price: "HK$ 2", image: "OP01-028.jpg", color: "赤", type: "事件" },
-  { name: "激射光束!! (ラディカルビーム!!)", code: "OP01-029", rarity: "UC", price: "HK$ 10", image: "OP01-029.jpg", color: "赤", type: "事件" },
-
-  // ===== 綠色 (Green) OP01-030 ~ OP01-058 =====
-  { name: "光月御田 (光月おでん)", code: "OP01-030", rarity: "L", price: "HK$ 30", image: "OP01-030.jpg", color: "緑", type: "領袖" },
-  { name: "綠色卡片 (待確認)", code: "OP01-031", rarity: "C", price: "HK$ 2", image: "OP01-031.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-032", rarity: "C", price: "HK$ 2", image: "OP01-032.jpg", color: "緑", type: "角色" },
-  { name: "以藏 (イゾウ)", code: "OP01-033", rarity: "UC", price: "HK$ 15", image: "OP01-033.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-034", rarity: "C", price: "HK$ 2", image: "OP01-034.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-035", rarity: "C", price: "HK$ 2", image: "OP01-035.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-036", rarity: "C", price: "HK$ 2", image: "OP01-036.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-037", rarity: "C", price: "HK$ 2", image: "OP01-037.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-038", rarity: "C", price: "HK$ 2", image: "OP01-038.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-039", rarity: "C", price: "HK$ 2", image: "OP01-039.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-040", rarity: "C", price: "HK$ 2", image: "OP01-040.jpg", color: "緑", type: "角色" },
-  { name: "光月桃之助 (光月モモの助)", code: "OP01-041", rarity: "R", price: "HK$ 15", image: "OP01-041.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-042", rarity: "C", price: "HK$ 2", image: "OP01-042.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-043", rarity: "C", price: "HK$ 2", image: "OP01-043.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-044", rarity: "C", price: "HK$ 2", image: "OP01-044.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-045", rarity: "C", price: "HK$ 2", image: "OP01-045.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-046", rarity: "C", price: "HK$ 2", image: "OP01-046.jpg", color: "緑", type: "角色" },
-  { name: "托拉法爾加・羅 (トラファルガー・ロー)", code: "OP01-047", rarity: "SR", price: "HK$ 80", image: "OP01-047.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-048", rarity: "C", price: "HK$ 2", image: "OP01-048.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-049", rarity: "C", price: "HK$ 2", image: "OP01-049.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-050", rarity: "C", price: "HK$ 2", image: "OP01-050.jpg", color: "緑", type: "角色" },
-  { name: "尤斯塔斯・基德 (ユースタス・キッド)", code: "OP01-051", rarity: "SR", price: "HK$ 50", image: "OP01-051.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-052", rarity: "C", price: "HK$ 2", image: "OP01-052.jpg", color: "緑", type: "角色" },
-  { name: "綠色卡片 (待確認)", code: "OP01-053", rarity: "C", price: "HK$ 2", image: "OP01-053.jpg", color: "緑", type: "角色" },
-  { name: "X・德雷克 (X・ドレーク)", code: "OP01-054", rarity: "SR", price: "HK$ 30", image: "OP01-054.jpg", color: "緑", type: "角色" },
-  { name: "綠色事件卡 (待確認)", code: "OP01-055", rarity: "C", price: "HK$ 2", image: "OP01-055.jpg", color: "緑", type: "事件" },
-  { name: "綠色事件卡 (待確認)", code: "OP01-056", rarity: "C", price: "HK$ 2", image: "OP01-056.jpg", color: "緑", type: "事件" },
-  { name: "綠色事件卡 (待確認)", code: "OP01-057", rarity: "C", price: "HK$ 2", image: "OP01-057.jpg", color: "緑", type: "事件" },
-  { name: "龐克吉普森 (パンクギブソン)", code: "OP01-058", rarity: "R", price: "HK$ 10", image: "OP01-058.jpg", color: "緑", type: "事件" },
-
-  // ===== 藍色 (Blue) OP01-059 ~ OP01-090 =====
-  { name: "藍色領袖 (待確認)", code: "OP01-059", rarity: "L", price: "HK$ 30", image: "OP01-059.jpg", color: "青", type: "領袖" },
-  { name: "唐吉訶德・多佛朗明哥 (ドンキホーテ・ドフラミンゴ)", code: "OP01-060", rarity: "L", price: "HK$ 40", image: "OP01-060.jpg", color: "青", type: "領袖" },
-  { name: "藍色領袖 (待確認)", code: "OP01-061", rarity: "L", price: "HK$ 30", image: "OP01-061.jpg", color: "青", type: "領袖" },
-  { name: "克洛克達爾 (クロコダイル)", code: "OP01-062", rarity: "L", price: "HK$ 30", image: "OP01-062.jpg", color: "青", type: "領袖" },
-  { name: "藍色卡片 (待確認)", code: "OP01-063", rarity: "C", price: "HK$ 2", image: "OP01-063.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-064", rarity: "C", price: "HK$ 2", image: "OP01-064.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-065", rarity: "C", price: "HK$ 2", image: "OP01-065.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-066", rarity: "C", price: "HK$ 2", image: "OP01-066.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-067", rarity: "C", price: "HK$ 2", image: "OP01-067.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-068", rarity: "C", price: "HK$ 2", image: "OP01-068.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-069", rarity: "C", price: "HK$ 2", image: "OP01-069.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-070", rarity: "C", price: "HK$ 2", image: "OP01-070.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-071", rarity: "C", price: "HK$ 2", image: "OP01-071.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-072", rarity: "C", price: "HK$ 2", image: "OP01-072.jpg", color: "青", type: "角色" },
-  { name: "唐吉訶德・多佛朗明哥 (ドンキホーテ・ドフラミンゴ)", code: "OP01-073", rarity: "SR", price: "HK$ 35", image: "OP01-073.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-074", rarity: "C", price: "HK$ 2", image: "OP01-074.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-075", rarity: "C", price: "HK$ 2", image: "OP01-075.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-076", rarity: "C", price: "HK$ 2", image: "OP01-076.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-077", rarity: "C", price: "HK$ 2", image: "OP01-077.jpg", color: "青", type: "角色" },
-  { name: "波雅・漢考克 (ボア・ハンコック)", code: "OP01-078", rarity: "SR", price: "HK$ 90", image: "OP01-078.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-079", rarity: "C", price: "HK$ 2", image: "OP01-079.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-080", rarity: "C", price: "HK$ 2", image: "OP01-080.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-081", rarity: "C", price: "HK$ 2", image: "OP01-081.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-082", rarity: "C", price: "HK$ 2", image: "OP01-082.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-083", rarity: "C", price: "HK$ 2", image: "OP01-083.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-084", rarity: "C", price: "HK$ 2", image: "OP01-084.jpg", color: "青", type: "角色" },
-  { name: "藍色卡片 (待確認)", code: "OP01-085", rarity: "C", price: "HK$ 2", image: "OP01-085.jpg", color: "青", type: "角色" },
-  { name: "藍色事件卡 (待確認)", code: "OP01-086", rarity: "C", price: "HK$ 2", image: "OP01-086.jpg", color: "青", type: "事件" },
-  { name: "藍色事件卡 (待確認)", code: "OP01-087", rarity: "C", price: "HK$ 2", image: "OP01-087.jpg", color: "青", type: "事件" },
-  { name: "藍色事件卡 (待確認)", code: "OP01-088", rarity: "C", price: "HK$ 2", image: "OP01-088.jpg", color: "青", type: "事件" },
-  { name: "藍色事件卡 (待確認)", code: "OP01-089", rarity: "C", price: "HK$ 2", image: "OP01-089.jpg", color: "青", type: "事件" },
-  { name: "藍色舞台卡 (待確認)", code: "OP01-090", rarity: "C", price: "HK$ 2", image: "OP01-090.jpg", color: "青", type: "舞台" },
-
-  // ===== 紫色 (Purple) OP01-091 ~ OP01-119 =====
-  { name: "金獅 (キング)", code: "OP01-091", rarity: "L", price: "HK$ 30", image: "OP01-091.jpg", color: "紫", type: "領袖" },
-  { name: "紫色領袖 (待確認)", code: "OP01-092", rarity: "L", price: "HK$ 30", image: "OP01-092.jpg", color: "紫", type: "領袖" },
-  { name: "紫色領袖 (待確認)", code: "OP01-093", rarity: "L", price: "HK$ 30", image: "OP01-093.jpg", color: "紫", type: "領袖" },
-  { name: "海道 (カイドウ)", code: "OP01-094", rarity: "SR", price: "HK$ 50", image: "OP01-094.jpg", color: "紫", type: "角色" }, // 註：OP01有海道SR
-  { name: "紫色卡片 (待確認)", code: "OP01-095", rarity: "C", price: "HK$ 2", image: "OP01-095.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-096", rarity: "C", price: "HK$ 2", image: "OP01-096.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-097", rarity: "C", price: "HK$ 2", image: "OP01-097.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-098", rarity: "C", price: "HK$ 2", image: "OP01-098.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-099", rarity: "C", price: "HK$ 2", image: "OP01-099.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-100", rarity: "C", price: "HK$ 2", image: "OP01-100.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-101", rarity: "C", price: "HK$ 2", image: "OP01-101.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-102", rarity: "C", price: "HK$ 2", image: "OP01-102.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-103", rarity: "C", price: "HK$ 2", image: "OP01-103.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-104", rarity: "C", price: "HK$ 2", image: "OP01-104.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-105", rarity: "C", price: "HK$ 2", image: "OP01-105.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-106", rarity: "C", price: "HK$ 2", image: "OP01-106.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-107", rarity: "C", price: "HK$ 2", image: "OP01-107.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-108", rarity: "C", price: "HK$ 2", image: "OP01-108.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-109", rarity: "C", price: "HK$ 2", image: "OP01-109.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-110", rarity: "C", price: "HK$ 2", image: "OP01-110.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-111", rarity: "C", price: "HK$ 2", image: "OP01-111.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-112", rarity: "C", price: "HK$ 2", image: "OP01-112.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-113", rarity: "C", price: "HK$ 2", image: "OP01-113.jpg", color: "紫", type: "角色" },
-  { name: "克洛克達爾 (クロコダイル)", code: "OP01-114", rarity: "SR", price: "HK$ 30", image: "OP01-114.jpg", color: "紫", type: "角色" },
-  { name: "紫色卡片 (待確認)", code: "OP01-115", rarity: "C", price: "HK$ 2", image: "OP01-115.jpg", color: "紫", type: "角色" },
-  { name: "紫色事件卡 (待確認)", code: "OP01-116", rarity: "C", price: "HK$ 2", image: "OP01-116.jpg", color: "紫", type: "事件" },
-  { name: "紫色事件卡 (待確認)", code: "OP01-117", rarity: "C", price: "HK$ 2", image: "OP01-117.jpg", color: "紫", type: "事件" },
-  { name: "紫色事件卡 (待確認)", code: "OP01-118", rarity: "C", price: "HK$ 2", image: "OP01-118.jpg", color: "紫", type: "事件" },
-  { name: "紫色事件卡 (待確認)", code: "OP01-119", rarity: "C", price: "HK$ 2", image: "OP01-119.jpg", color: "紫", type: "事件" },
-
-  // ===== 隱藏稀有 (Secret Rare) OP01-120 ~ OP01-121 =====
-  { name: "傑克 (シャンクス)", code: "OP01-120", rarity: "SEC", price: "HK$ 200", image: "OP01-120.jpg", color: "赤", type: "角色" },
-  { name: "大和 (ヤマト)", code: "OP01-121", rarity: "SEC", price: "HK$ 150", image: "OP01-121.jpg", color: "緑", type: "角色" }
-]
-
-```
-        ];
-
-        const gallery = document.getElementById('cardGallery');
-
-        function renderCards(cards) {
-            gallery.innerHTML = '';
-            
-            if (cards.length === 0) {
-                gallery.innerHTML = '<div class="no-results">沒有找到符合條件的卡片 🏴‍☠️</div>';
-                return;
-            }
-
-            cards.forEach(card => {
-                const colorMap = { '紅':'tag-red', '綠':'tag-green', '藍':'tag-blue', '紫':'tag-purple', '黑':'tag-black', '黃':'tag-yellow', '多色':'tag-multi' };
-                const colorClass = colorMap[card.color] || '';
-
-                const cardHTML = `
-                    <div class="card">
-                        <img src="${card.image}" class="card-img" alt="${card.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x420/334155/ffffff?text=OP-TCG';">
-                        <div class="card-info">
-                            <div>
-                                <p class="card-name">${card.name}</p>
-                                <p class="card-meta">
-                                    <span class="color-tag ${colorClass}">${card.color}</span>
-                                    ${card.code} · ${card.rarity} · ${card.type}
-                                </p>
-                            </div>
-                            <p class="card-price">${card.price}</p>
-                        </div>
-                    </div>
-                `;
-                gallery.innerHTML += cardHTML;
-            });
-        }
-
-        function setupFilterButtons() {
-            document.querySelectorAll('#colorFilters .filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('#colorFilters .filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    activeColor = btn.getAttribute('data-color');
-                    filterCards();
-                });
-            });
-
-            document.querySelectorAll('#typeFilters .filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    activeType = btn.getAttribute('data-type');
-                    filterCards();
-                });
-            });
-        }
-
-        // --- 核心過濾邏輯（已升級：包含稀有度搜尋） ---
-        function filterCards() {
-            const keyword = document.getElementById('searchInput').value.toLowerCase();
-            
-            const filtered = cardData.filter(card => {
-                // 1. 🔍 升級這裡：同時檢查卡名、卡號、以及稀有度 (rarity)
-                const matchSearch = card.name.toLowerCase().includes(keyword) || 
-                                     card.code.toLowerCase().includes(keyword) ||
-                                     card.rarity.toLowerCase().includes(keyword);
-                
-                // 2. 🔴 檢查顏色
-                const matchColor = (activeColor === 'ALL') || (card.color === activeColor);
-                
-                // 3. 🃏 檢查種類
-                const matchType = (activeType === 'ALL') || (card.type === activeType);
-
-                return matchSearch && matchColor && matchType;
-            });
-            
-            renderCards(filtered);
-        }
-
-        setupFilterButtons();
-        renderCards(cardData);
-    </script>
-
-</body>
-</html>
+          // ===== 藍色 (Blue) OP01-059 ~ OP01-090 =====
+          { name: "藍色領航 (待確認)", code: "OP01-059", rarity: "L", price: "HK$ 30", image: "OP01-059.jpg", color: "藍", type: "領航" },
+          { name: "唐吉訶德・多佛朗明哥 (ドンキホーテ・ドフラミンゴ)", code: "OP01-060", rarity: "L", price: "HK$ 40", image: "OP01-060.jpg", color: "藍", type: "領航" },
+          { name
