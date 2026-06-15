@@ -180,7 +180,7 @@
                 let isOutOfStock = (card.stock && card.stock.trim() === '0');
                 
                 if (isOutOfStock) {
-                    priceHTML = `<div class="out-of-stock">沒有</div>`;
+                    priceHTML = `<div class="out-of-stock">售罄</div>`;
                 } else {
                     priceHTML = `<p class="card-price">${card.price || ''}</p>`;
                 }
