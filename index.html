@@ -110,6 +110,7 @@
         let activeRarity = 'ALL'; 
         let cardData = []; 
 
+        // 顏色十六進位對照表
         const colorHexMap = { 
             '紅': '#ef4444', 
             '綠': '#22c55e', 
@@ -119,6 +120,7 @@
             '黃': '#eab308' 
         };
 
+        // 💡 保留你的 Google 試算表 CSV 網址
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRs93U82XZB3cfiP333BzJYlig0WgzXaqhhOohP0qtNmi0aoB6fxZirLbdVVTTC4NFHL5Xwnv17ZPrr/pub?output=csv'; 
         const noCacheUrl = SHEET_CSV_URL + '&t=' + new Date().getTime();
 
@@ -157,24 +159,29 @@
 
                 // --- 1. 處理雙拼色底色 ---
                 if (displayColorName.includes(',')) {
+                    // 如果是多色，把顏色拆開 (例如: "藍,紫")
                     const colors = displayColorName.split(',');
-                    const c1 = colorHexMap[colors[0].trim()] || '#64748b'; 
-                    const c2 = colorHexMap[colors[1].trim()] || '#64748b'; 
-                    tagStyle = `background: linear-gradient(90deg, ${c1} 50%, ${c2} 50%); color: #fff;`;
+                    const c1 = colorHexMap[colors[0].trim()] || '#64748b'; // 第一個顏色
+                    const c2 = colorHexMap[colors[1].trim()] || '#64748b'; // 第二個顏色
+                    
+                    // 💡 更改為斜向分色特效，135deg 使兩個顏色斜向各佔一半，保持銳利邊界
+                    tagStyle = `background: linear-gradient(135deg, ${c1} 50%, ${c2} 50%); color: #fff;`;
                     displayColorName = '多色';
                 } else {
+                    // 單色處理
                     const c = colorHexMap[displayColorName] || '#64748b';
                     tagStyle = `background-color: ${c};`;
+                    
                     if (displayColorName === '黃') {
-                        tagStyle += ' color: #000;'; 
+                        tagStyle += ' color: #000;'; // 黃底配黑字
                     } else if (displayColorName === '黑') {
-                        tagStyle += ' border: 1px solid #4b5563; color: #fff;'; 
+                        tagStyle += ' border: 1px solid #4b5563; color: #fff;'; // 黑底加上灰色邊框
                     } else {
                         tagStyle += ' color: #fff;';
                     }
                 }
 
-                // --- 2. 處理缺貨/無庫存判斷 (🔥 專屬修改：只採用方法 B) ---
+                // --- 2. 處理缺貨/無庫存判斷 (只採用方法 B) ---
                 let priceHTML = '';
                 // 僅當 stock 欄位存在且明確等於 '0' 時，才判定為缺貨
                 let isOutOfStock = (card.stock && card.stock.trim() === '0');
@@ -206,6 +213,7 @@
             });
         }
 
+        // --- 綁定所有按鈕的點擊事件 ---
         function setupFilterButtons() {
             document.querySelectorAll('#colorFilters .filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -244,6 +252,7 @@
             });
         }
 
+        // --- 核心過濾邏輯 ---
         function filterCards() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             
