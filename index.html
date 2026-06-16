@@ -30,12 +30,16 @@
         .card-name { font-size: 13px; font-weight: bold; margin: 0 0 3px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #f1f5f9; }
         .card-meta { font-size: 11px; color: #94a3b8; margin-bottom: 6px; display: flex; align-items: center; }
         
-        /* 顏色標籤 */
+        /* 顏色標籤 (包含斜向多色) */
         .color-tag { display: inline-block; padding: 2px 5px; border-radius: 4px; margin-right: 4px; font-weight: bold; font-size: 10px;}
         
-        /* 價格與缺貨樣式 */
-        .card-price { font-size: 15px; color: #fbbf24; font-weight: 800; margin: 0; text-align: right; }
-        .out-of-stock { color: #94a3b8; background-color: #334155; padding: 4px 8px; border-radius: 6px; font-size: 12px; display: inline-block; float: right; font-weight: bold; }
+        /* 底部：庫存與價格排版 */
+        .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; }
+        .stock-text { font-size: 12px; color: #94a3b8; font-weight: 600; background-color: #0f172a; padding: 3px 8px; border-radius: 4px; }
+        
+        .card-price { font-size: 15px; color: #fbbf24; font-weight: 900; margin: 0; text-align: right; }
+        .price-disabled { font-size: 12px; color: #4b5563; text-decoration: line-through; text-align: right; margin-bottom: 2px; }
+        .out-of-stock { color: #94a3b8; background-color: #334155; padding: 4px 12px; border-radius: 6px; font-size: 13px; display: inline-block; font-weight: bold; }
         
         .no-results { grid-column: 1 / -1; text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
         .loading { grid-column: 1 / -1; text-align: center; padding: 50px; color: #38bdf8; font-size: 18px; font-weight: bold;}
@@ -58,22 +62,7 @@
             <button class="filter-btn" data-pack="OP06">OP06</button>
             <button class="filter-btn" data-pack="OP07">OP07</button>
             <button class="filter-btn" data-pack="OP08">OP08</button>
-            <button class="filter-btn" data-pack="OP09">OP09</button>
-            <button class="filter-btn" data-pack="OP10">OP10</button>
-            <button class="filter-btn" data-pack="OP11">OP11</button>
-            <button class="filter-btn" data-pack="OP12">OP12</button>
-            <button class="filter-btn" data-pack="OP13">OP13</button>
-            <button class="filter-btn" data-pack="OP14">OP14</button>
-            <button class="filter-btn" data-pack="OP15">OP15</button>
-            <button class="filter-btn" data-pack="OP16">OP16</button>
-            <button class="filter-btn" data-pack="OP17">OP17</button>
             <button class="filter-btn" data-pack="EB01">EB01</button>
-            <button class="filter-btn" data-pack="EB02">EB02</button>
-            <button class="filter-btn" data-pack="EB03">EB03</button>
-            <button class="filter-btn" data-pack="EB04">EB04</button>
-            <button class="filter-btn" data-pack="EB05">EB05</button>
-            <button class="filter-btn" data-pack="PRB01">PRB01</button>
-            <button class="filter-btn" data-pack="PRB01">PRB02</button>
             <button class="filter-btn" data-pack="ST">ST(預組)</button>
         </div>
 
@@ -125,12 +114,8 @@
         let cardData = []; 
 
         const colorHexMap = { 
-            '紅': '#ef4444', 
-            '綠': '#22c55e', 
-            '藍': '#3b82f6', 
-            '紫': '#a855f7', 
-            '黑': '#111827', 
-            '黃': '#eab308' 
+            '紅': '#ef4444', '綠': '#22c55e', '藍': '#3b82f6', 
+            '紫': '#a855f7', '黑': '#111827', '黃': '#eab308' 
         };
 
         const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRs93U82XZB3cfiP333BzJYlig0WgzXaqhhOohP0qtNmi0aoB6fxZirLbdVVTTC4NFHL5Xwnv17ZPrr/pub?output=csv'; 
@@ -149,7 +134,6 @@
                     gallery.innerHTML = '<div class="no-results">有連上 Google 表格，但找不到有效的卡片資料 🏴‍☠️</div>';
                     return;
                 }
-
                 setupFilterButtons();
                 filterCards(); 
             },
@@ -158,17 +142,16 @@
             }
         });
 
-        // 🚀 核心優化點在此！
         function renderCards(cards) {
             if (cards.length === 0) {
                 gallery.innerHTML = '<div class="no-results">沒有找到符合條件的卡片 🏴‍☠️</div>';
                 return;
             }
 
-            // 💡 魔法二：使用變數打包所有的 HTML，最後再一次性更新網頁，大幅減少畫面卡頓
             let htmlContent = '';
 
             cards.forEach(card => {
+                // --- 1. 顏色標籤處理 (斜向拼接) ---
                 let displayColorName = card.color ? card.color.trim() : '';
                 let tagStyle = '';
 
@@ -181,26 +164,35 @@
                 } else {
                     const c = colorHexMap[displayColorName] || '#64748b';
                     tagStyle = `background-color: ${c};`;
-                    
-                    if (displayColorName === '黃') {
-                        tagStyle += ' color: #000;'; 
-                    } else if (displayColorName === '黑') {
-                        tagStyle += ' border: 1px solid #4b5563; color: #fff;'; 
-                    } else {
-                        tagStyle += ' color: #fff;';
-                    }
+                    if (displayColorName === '黃') tagStyle += ' color: #000;'; 
+                    else if (displayColorName === '黑') tagStyle += ' border: 1px solid #4b5563; color: #fff;'; 
+                    else tagStyle += ' color: #fff;';
                 }
 
-                let priceHTML = '';
-                let isOutOfStock = (card.stock && card.stock.trim() === '0');
+                // --- 2. 庫存與價格排版處理 ---
+                let stockNum = card.stock ? card.stock.trim() : '';
+                let isOutOfStock = (stockNum === '0' || stockNum === '');
                 
+                let bottomHTML = '';
+
                 if (isOutOfStock) {
-                    priceHTML = `<div class="out-of-stock">售罄</div>`;
+                    // 缺貨狀態：左邊顯示庫存0，右邊顯示灰色劃線原價 + 售罄按鈕
+                    bottomHTML = `
+                        <div class="stock-text">庫存: 0</div>
+                        <div style="text-align: right;">
+                            ${card.price ? `<div class="price-disabled">${card.price}</div>` : ''}
+                            <div class="out-of-stock">售罄</div>
+                        </div>
+                    `;
                 } else {
-                    priceHTML = `<p class="card-price">${card.price || ''}</p>`;
+                    // 有貨狀態：左邊顯示真實庫存數字，右邊顯示亮黃色價格
+                    bottomHTML = `
+                        <div class="stock-text">庫存: ${stockNum}</div>
+                        <div class="card-price">${card.price || ''}</div>
+                    `;
                 }
 
-                // 💡 魔法一：在 img 標籤加入 loading="lazy"，讓圖片滑到才載入
+                // --- 組合 HTML ---
                 htmlContent += `
                     <div class="card">
                         <img loading="lazy" src="${card.image}" class="card-img" alt="${card.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x420/334155/ffffff?text=OP-TCG';">
@@ -212,15 +204,14 @@
                                     <span>${card.code} · ${card.rarity}</span>
                                 </div>
                             </div>
-                            <div style="margin-top: 5px;">
-                                ${priceHTML}
+                            <div class="card-bottom">
+                                ${bottomHTML}
                             </div>
                         </div>
                     </div>
                 `;
             });
 
-            // 最後一次把所有內容貼上去
             gallery.innerHTML = htmlContent;
         }
 
