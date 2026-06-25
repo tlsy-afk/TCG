@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         /* =========================================
-           📱 基礎設定與【手機版】樣式 (完全不變)
+           📱 基礎設定與【手機版】樣式
            ========================================= */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0c111d; color: #f8fafc; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         header { position: sticky; top: 0; background-color: rgba(12, 17, 29, 0.98); backdrop-filter: blur(8px); padding: 12px 15px; z-index: 100; border-bottom: 1px solid #1e293b; }
@@ -29,11 +29,30 @@
         .filter-select optgroup { color: #fbbf24; font-style: normal; background-color: #0c111d; }
         .filter-select option { color: #f8fafc; background-color: #1e293b; font-weight: normal; }
         
-        /* 卡片網格與樣式 */
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 12px; padding-bottom: 80px; }
+        /* 🔥 卡片網格：加入了防壓縮機制的全局設定 */
+        .gallery { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+            grid-auto-rows: max-content; /* 關鍵：強制列高為內容最大高度，絕不壓縮 */
+            align-content: start; /* 關鍵：讓不足的卡片靠上對齊 */
+            gap: 12px; 
+            padding: 12px; 
+            padding-bottom: 80px; 
+        }
+        
         .card { background-color: #1e293b; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.4); display: flex; flex-direction: column; transition: transform 0.2s; }
         .card:active { transform: scale(1.02); }
-        .card-img { width: 100%; aspect-ratio: 63 / 88; object-fit: cover; background-color: #334155; border-bottom: 1px solid #121722; }
+        
+        /* 🔥 圖片防壓扁機制 */
+        .card-img { 
+            width: 100%; 
+            aspect-ratio: 63 / 88; 
+            object-fit: cover; 
+            background-color: #334155; 
+            border-bottom: 1px solid #121722; 
+            flex-shrink: 0; /* 關鍵：絕對不允許 Flexbox 把圖片壓扁 */
+        }
+        
         .card-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .card-name { font-size: 13px; font-weight: bold; margin: 0 0 3px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #f1f5f9; }
         .card-meta { font-size: 11px; color: #94a3b8; margin-bottom: 6px; display: flex; align-items: center; }
@@ -54,12 +73,11 @@
 
 
         /* =========================================
-           🖥️ 【電腦版專屬】排版 (左側菜單、右側卡片)
-           當螢幕寬度大於 850px 時才會啟動這段程式碼
+           🖥️ 【電腦版專屬】排版
            ========================================= */
         @media (min-width: 850px) {
             body { 
-                overflow: hidden; /* 鎖死整個網頁的滾動條，交給左右兩個區塊自己滾動 */
+                overflow: hidden; 
             }
             .layout-wrapper {
                 display: flex;
@@ -67,58 +85,39 @@
                 width: 100%;
             }
             header {
-                width: 280px; /* 左側邊欄寬度固定 */
+                width: 280px; 
                 height: 100vh;
-                position: relative; /* 解除手機版的置頂 */
-                overflow-y: auto; /* 讓側邊欄可以獨立滾動 */
+                position: relative; 
+                overflow-y: auto; 
                 border-right: 1px solid #1e293b;
                 border-bottom: none;
-                flex-shrink: 0; /* 防止被右邊擠壓 */
+                flex-shrink: 0; 
                 padding: 20px;
                 box-sizing: border-box;
             }
-            header h1 {
-                font-size: 24px;
-                margin-bottom: 20px;
-            }
-            /* 讓篩選按鈕在電腦版變成堆疊的區塊，不要橫向滑動 */
-            .filter-row {
-                flex-wrap: wrap; 
-                white-space: normal;
-                margin-bottom: 20px;
-            }
-            .row-label {
-                width: 100%; /* 讓標題自己佔滿一行 */
-                margin-bottom: 10px;
-                margin-top: 5px;
-                font-size: 14px;
-            }
-            .filter-btn {
-                margin-bottom: 8px;
-                padding: 6px 14px;
-            }
-            .filter-select {
-                width: 100%; /* 下拉選單佔滿側邊欄 */
-                padding: 8px 10px;
-            }
+            header h1 { font-size: 24px; margin-bottom: 20px; }
             
-            /* 右側卡片顯示區 */
+            .filter-row { flex-wrap: wrap; white-space: normal; margin-bottom: 20px; }
+            .row-label { width: 100%; margin-bottom: 10px; margin-top: 5px; font-size: 14px; }
+            .filter-btn { margin-bottom: 8px; padding: 6px 14px; }
+            .filter-select { width: 100%; padding: 8px 10px; }
+            
+            /* 🔥 右側卡片顯示區加強 */
             .gallery {
-                flex-grow: 1; /* 佔滿右邊剩下的所有空間 */
+                flex-grow: 1; 
                 height: 100vh;
-                overflow-y: auto; /* 卡片區獨立上下滾動 */
+                overflow-y: auto; 
                 padding: 24px;
                 box-sizing: border-box;
-                /* 電腦版卡片稍微放大一點點 */
                 grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-                align-content: start; /* 避免卡片太少時跑到螢幕正中間 */
+                grid-auto-rows: max-content; /* 確保電腦版也不壓縮卡片 */
+                align-content: start; 
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- 💡 加入一個最外層的包裹區塊，用來控制左右排版 -->
     <div class="layout-wrapper">
         
         <header>
@@ -205,7 +204,7 @@
             <div class="loading">資料載入中... 🏴‍☠️</div>
         </div>
 
-    </div> <!-- layout-wrapper 結束 -->
+    </div>
 
     <script>
         let activeColor = 'ALL';
