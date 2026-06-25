@@ -6,7 +6,9 @@
     <title>ONE PIECE TCG</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        /* --- 基礎設定與配色 --- */
+        /* =========================================
+           📱 基礎設定與【手機版】樣式 (完全不變)
+           ========================================= */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0c111d; color: #f8fafc; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         header { position: sticky; top: 0; background-color: rgba(12, 17, 29, 0.98); backdrop-filter: blur(8px); padding: 12px 15px; z-index: 100; border-bottom: 1px solid #1e293b; }
         header h1 { margin: 0 0 10px 0; font-size: 18px; text-align: center; color: #38bdf8; font-weight: 900; }
@@ -23,18 +25,7 @@
         .filter-btn.active { background-color: #f8fafc; color: #0c111d; }
 
         /* 下拉選單專屬樣式 */
-        .filter-select { 
-            background-color: #1e293b; 
-            color: #f8fafc; 
-            border: 1px solid #334155; 
-            padding: 6px 10px; 
-            font-size: 13px; 
-            font-weight: bold; 
-            border-radius: 4px; 
-            outline: none; 
-            cursor: pointer;
-            width: 160px;
-        }
+        .filter-select { background-color: #1e293b; color: #f8fafc; border: 1px solid #334155; padding: 6px 10px; font-size: 13px; font-weight: bold; border-radius: 4px; outline: none; cursor: pointer; width: 160px; }
         .filter-select optgroup { color: #fbbf24; font-style: normal; background-color: #0c111d; }
         .filter-select option { color: #f8fafc; background-color: #1e293b; font-weight: normal; }
         
@@ -60,93 +51,161 @@
         
         .no-results { grid-column: 1 / -1; text-align: center; padding: 40px; color: #94a3b8; font-size: 14px; }
         .loading { grid-column: 1 / -1; text-align: center; padding: 50px; color: #38bdf8; font-size: 18px; font-weight: bold;}
+
+
+        /* =========================================
+           🖥️ 【電腦版專屬】排版 (左側菜單、右側卡片)
+           當螢幕寬度大於 850px 時才會啟動這段程式碼
+           ========================================= */
+        @media (min-width: 850px) {
+            body { 
+                overflow: hidden; /* 鎖死整個網頁的滾動條，交給左右兩個區塊自己滾動 */
+            }
+            .layout-wrapper {
+                display: flex;
+                height: 100vh;
+                width: 100%;
+            }
+            header {
+                width: 280px; /* 左側邊欄寬度固定 */
+                height: 100vh;
+                position: relative; /* 解除手機版的置頂 */
+                overflow-y: auto; /* 讓側邊欄可以獨立滾動 */
+                border-right: 1px solid #1e293b;
+                border-bottom: none;
+                flex-shrink: 0; /* 防止被右邊擠壓 */
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            header h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            /* 讓篩選按鈕在電腦版變成堆疊的區塊，不要橫向滑動 */
+            .filter-row {
+                flex-wrap: wrap; 
+                white-space: normal;
+                margin-bottom: 20px;
+            }
+            .row-label {
+                width: 100%; /* 讓標題自己佔滿一行 */
+                margin-bottom: 10px;
+                margin-top: 5px;
+                font-size: 14px;
+            }
+            .filter-btn {
+                margin-bottom: 8px;
+                padding: 6px 14px;
+            }
+            .filter-select {
+                width: 100%; /* 下拉選單佔滿側邊欄 */
+                padding: 8px 10px;
+            }
+            
+            /* 右側卡片顯示區 */
+            .gallery {
+                flex-grow: 1; /* 佔滿右邊剩下的所有空間 */
+                height: 100vh;
+                overflow-y: auto; /* 卡片區獨立上下滾動 */
+                padding: 24px;
+                box-sizing: border-box;
+                /* 電腦版卡片稍微放大一點點 */
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+                align-content: start; /* 避免卡片太少時跑到螢幕正中間 */
+            }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🏴‍☠️ ONE PIECE TCG</h1>
-        <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號..." oninput="filterCards()">
+    <!-- 💡 加入一個最外層的包裹區塊，用來控制左右排版 -->
+    <div class="layout-wrapper">
         
-        <div class="filter-row" id="packFilters">
-            <span class="row-label">─ 卡包系列</span>
-            <select id="packSelect" class="filter-select">
-                <option value="ALL">全部 (ALL)</option>
-                <optgroup label="補充包">
-                    <option value="OP17">OP17</option>
-                    <option value="OP16">OP16</option>
-                    <option value="OP15">OP15</option>
-                    <option value="OP14">OP14</option>
-                    <option value="OP13">OP13</option>
-                    <option value="OP12">OP12</option>
-                    <option value="OP11">OP11</option>
-                    <option value="OP10">OP10</option>
-                    <option value="OP09">OP09</option>
-                    <option value="OP08">OP08</option>
-                    <option value="OP07">OP07</option>
-                    <option value="OP06">OP06</option>
-                    <option value="OP05">OP05</option>
-                    <option value="OP04">OP04</option>
-                    <option value="OP03">OP03</option>
-                    <option value="OP02">OP02</option>
-                    <option value="OP01">OP01</option>
-                </optgroup>
-                <optgroup label="特殊補充包">
-                    <option value="EB05">EB05</option>
-                    <option value="EB04">EB04</option>
-                    <option value="EB03">EB03</option>
-                    <option value="EB02">EB02</option>
-                    <option value="EB01">EB01</option>
-                </optgroup>
-                <optgroup label="高級補充包">
-                    <option value="PRB02">PRB02</option>
-                    <option value="PRB01">PRB01</option>
-                </optgroup>
-                <optgroup label="起始牌組">
-                    <option value="ST">ST (預組)</option>
-                </optgroup>
-            </select>
+        <header>
+            <h1>🏴‍☠️ ONE PIECE TCG</h1>
+            <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號..." oninput="filterCards()">
+            
+            <div class="filter-row" id="packFilters">
+                <span class="row-label">─ 卡包系列</span>
+                <select id="packSelect" class="filter-select">
+                    <option value="ALL">全部 (ALL)</option>
+                    <optgroup label="補充包">
+                        <option value="OP17">OP17</option>
+                        <option value="OP16">OP16</option>
+                        <option value="OP15">OP15</option>
+                        <option value="OP14">OP14</option>
+                        <option value="OP13">OP13</option>
+                        <option value="OP12">OP12</option>
+                        <option value="OP11">OP11</option>
+                        <option value="OP10">OP10</option>
+                        <option value="OP09">OP09</option>
+                        <option value="OP08">OP08</option>
+                        <option value="OP07">OP07</option>
+                        <option value="OP06">OP06</option>
+                        <option value="OP05">OP05</option>
+                        <option value="OP04">OP04</option>
+                        <option value="OP03">OP03</option>
+                        <option value="OP02">OP02</option>
+                        <option value="OP01">OP01</option>
+                    </optgroup>
+                    <optgroup label="特殊補充包">
+                        <option value="EB05">EB05</option>
+                        <option value="EB04">EB04</option>
+                        <option value="EB03">EB03</option>
+                        <option value="EB02">EB02</option>
+                        <option value="EB01">EB01</option>
+                    </optgroup>
+                    <optgroup label="高級補充包">
+                        <option value="PRB02">PRB02</option>
+                        <option value="PRB01">PRB01</option>
+                    </optgroup>
+                    <optgroup label="起始牌組">
+                        <option value="ST">ST (預組)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="filter-row" id="rarityFilters">
+                <span class="row-label">─ 稀有度</span>
+                <button class="filter-btn active" data-rarity="ALL">ALL</button>
+                <button class="filter-btn" data-rarity="L">L</button>
+                <button class="filter-btn" data-rarity="SEC">SEC</button>
+                <button class="filter-btn" data-rarity="SR">SR</button>
+                <button class="filter-btn" data-rarity="R">R</button>
+                <button class="filter-btn" data-rarity="UC">UC</button>
+                <button class="filter-btn" data-rarity="C">C</button>
+                <button class="filter-btn" data-rarity="SP">SP</button>
+                <button class="filter-btn" data-rarity="P">P</button>
+                <button class="filter-btn" data-rarity="TR">TR</button>
+            </div>
+
+            <div class="filter-row" id="colorFilters">
+                <span class="row-label">─ 顏色</span>
+                <button class="filter-btn active" data-color="ALL">ALL</button>
+                <button class="filter-btn" data-color="紅">紅</button>
+                <button class="filter-btn" data-color="綠">綠</button>
+                <button class="filter-btn" data-color="藍">藍</button>
+                <button class="filter-btn" data-color="紫">紫</button>
+                <button class="filter-btn" data-color="黑">黑</button>
+                <button class="filter-btn" data-color="黃">黃</button>
+                <button class="filter-btn" data-color="多色">多色</button>
+            </div>
+            
+            <div class="filter-row" id="typeFilters">
+                <span class="row-label">─ 卡片種類</span>
+                <button class="filter-btn active" data-type="ALL">ALL</button>
+                <button class="filter-btn" data-type="領航">領航</button>
+                <button class="filter-btn" data-type="角色">角色</button>
+                <button class="filter-btn" data-type="舞台">舞台</button>
+                <button class="filter-btn" data-type="事件">事件</button>
+            </div>
+        </header>
+
+        <div class="gallery" id="cardGallery">
+            <div class="loading">資料載入中... 🏴‍☠️</div>
         </div>
 
-        <div class="filter-row" id="rarityFilters">
-            <span class="row-label">─ 稀有度</span>
-            <button class="filter-btn active" data-rarity="ALL">ALL</button>
-            <button class="filter-btn" data-rarity="L">L</button>
-            <button class="filter-btn" data-rarity="SEC">SEC</button>
-            <button class="filter-btn" data-rarity="SR">SR</button>
-            <button class="filter-btn" data-rarity="R">R</button>
-            <button class="filter-btn" data-rarity="UC">UC</button>
-            <button class="filter-btn" data-rarity="C">C</button>
-            <button class="filter-btn" data-rarity="SP">SP</button>
-            <button class="filter-btn" data-rarity="P">P</button>
-            <button class="filter-btn" data-rarity="TR">TR</button>
-        </div>
-
-        <div class="filter-row" id="colorFilters">
-            <span class="row-label">─ 顏色</span>
-            <button class="filter-btn active" data-color="ALL">ALL</button>
-            <button class="filter-btn" data-color="紅">紅</button>
-            <button class="filter-btn" data-color="綠">綠</button>
-            <button class="filter-btn" data-color="藍">藍</button>
-            <button class="filter-btn" data-color="紫">紫</button>
-            <button class="filter-btn" data-color="黑">黑</button>
-            <button class="filter-btn" data-color="黃">黃</button>
-            <button class="filter-btn" data-color="多色">多色</button>
-        </div>
-        
-        <div class="filter-row" id="typeFilters">
-            <span class="row-label">─ 卡片種類</span>
-            <button class="filter-btn active" data-type="ALL">ALL</button>
-            <button class="filter-btn" data-type="領航">領航</button>
-            <button class="filter-btn" data-type="角色">角色</button>
-            <button class="filter-btn" data-type="舞台">舞台</button>
-            <button class="filter-btn" data-type="事件">事件</button>
-        </div>
-    </header>
-
-    <div class="gallery" id="cardGallery">
-        <div class="loading">資料載入中... 🏴‍☠️</div>
-    </div>
+    </div> <!-- layout-wrapper 結束 -->
 
     <script>
         let activeColor = 'ALL';
@@ -302,14 +361,8 @@
                 
                 const matchType = (activeType === 'ALL') || (card.type === activeType);
                 
-                // 🚀 【核心修改位置：卡包分類改判斷 Image 資料夾名稱】
                 const imagePath = card.image ? card.image.toUpperCase() : '';
-                // 例如 imagePath = "OP03/ST04-003.PNG"，split 取出第一段就會是 "OP03"
-                // 若沒有資料夾路徑，例如只寫了 "ST04-003.PNG"，就會直接把檔名前綴拿來比對
                 const packFromImage = imagePath.includes('/') ? imagePath.split('/')[0] : imagePath;
-                
-                // 判斷資料夾名稱是否以使用者選擇的 activePack 開頭
-                // (例如選 ST，就會抓到資料夾名稱是 ST01, ST02... 開頭的圖片)
                 const matchPack = (activePack === 'ALL') || (packFromImage.startsWith(activePack.toUpperCase()));
 
                 const matchRarity = (activeRarity === 'ALL') || (searchRarity === activeRarity);
