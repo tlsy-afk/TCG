@@ -18,8 +18,25 @@
         .filter-row::-webkit-scrollbar { display: none; }
         .row-label { font-size: 13px; color: #94a3b8; margin-right: 10px; font-weight: bold; flex-shrink: 0; width: 65px; }
         
+        /* 一般按鈕樣式 */
         .filter-btn { background-color: transparent; color: #f8fafc; border: 1px solid #f8fafc; padding: 5px 12px; margin-right: 6px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.15s; border-radius: 0; flex-shrink: 0; }
         .filter-btn.active { background-color: #f8fafc; color: #0c111d; }
+
+        /* 下拉選單專屬樣式 */
+        .filter-select { 
+            background-color: #1e293b; 
+            color: #f8fafc; 
+            border: 1px solid #334155; 
+            padding: 6px 10px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            border-radius: 4px; 
+            outline: none; 
+            cursor: pointer;
+            width: 160px; /* 控制選單寬度 */
+        }
+        .filter-select optgroup { color: #fbbf24; font-style: normal; background-color: #0c111d; } /* 分類標題樣式 */
+        .filter-select option { color: #f8fafc; background-color: #1e293b; font-weight: normal; }
         
         /* 卡片網格與樣式 */
         .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 12px; padding-bottom: 80px; }
@@ -51,34 +68,49 @@
         <h1>🏴‍☠️ ONE PIECE TCG</h1>
         <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號..." oninput="filterCards()">
         
+        <!-- 💡 升級：卡包系列下拉選單 -->
         <div class="filter-row" id="packFilters">
             <span class="row-label">─ 卡包系列</span>
-            <button class="filter-btn active" data-pack="ALL">ALL</button>
-            <button class="filter-btn" data-pack="OP01">OP01</button>
-            <button class="filter-btn" data-pack="OP02">OP02</button>
-            <button class="filter-btn" data-pack="OP03">OP03</button>
-            <button class="filter-btn" data-pack="OP04">OP04</button>
-            <button class="filter-btn" data-pack="OP05">OP05</button>
-            <button class="filter-btn" data-pack="OP06">OP06</button>
-            <button class="filter-btn" data-pack="OP07">OP07</button>
-            <button class="filter-btn" data-pack="OP08">OP08</button>
-            <button class="filter-btn" data-pack="OP09">OP09</button>
-            <button class="filter-btn" data-pack="OP10">OP10</button>
-            <button class="filter-btn" data-pack="OP11">OP11</button>
-            <button class="filter-btn" data-pack="OP12">OP12</button>
-            <button class="filter-btn" data-pack="OP13">OP13</button>
-            <button class="filter-btn" data-pack="OP14">OP14</button>
-            <button class="filter-btn" data-pack="OP15">OP15</button>
-            <button class="filter-btn" data-pack="OP16">OP16</button>
-            <button class="filter-btn" data-pack="OP17">OP17</button>
-            <button class="filter-btn" data-pack="EB01">EB01</button>
-            <button class="filter-btn" data-pack="EB02">EB02</button>
-            <button class="filter-btn" data-pack="EB03">EB03</button>
-            <button class="filter-btn" data-pack="EB04">EB04</button>
-            <button class="filter-btn" data-pack="EB05">EB05</button>
-            <button class="filter-btn" data-pack="PRB01">PRB01</button>
-            <button class="filter-btn" data-pack="PRB01">PRB02</button>
-            <button class="filter-btn" data-pack="ST">ST(預組)</button>
+            <select id="packSelect" class="filter-select">
+                <option value="ALL">全部 (ALL)</option>
+                
+                <optgroup label="補充包">
+                    <option value="OP17">OP17</option>
+                    <option value="OP16">OP16</option>
+                    <option value="OP15">OP15</option>
+                    <option value="OP14">OP14</option>
+                    <option value="OP13">OP13</option>
+                    <option value="OP12">OP12</option>
+                    <option value="OP11">OP11</option>
+                    <option value="OP10">OP10</option>
+                    <option value="OP09">OP09</option>
+                    <option value="OP08">OP08</option>
+                    <option value="OP07">OP07</option>
+                    <option value="OP06">OP06</option>
+                    <option value="OP05">OP05</option>
+                    <option value="OP04">OP04</option>
+                    <option value="OP03">OP03</option>
+                    <option value="OP02">OP02</option>
+                    <option value="OP01">OP01</option>
+                </optgroup>
+                
+                <optgroup label="特殊補充包">
+                    <option value="EB05">EB05</option>
+                    <option value="EB04">EB04</option>
+                    <option value="EB03">EB03</option>
+                    <option value="EB02">EB02</option>
+                    <option value="EB01">EB01</option>
+                </optgroup>
+                
+                <optgroup label="高級補充包">
+                    <option value="PRB02">PRB02</option>
+                    <option value="PRB01">PRB01</option>
+                </optgroup>
+                
+                <optgroup label="起始牌組">
+                    <option value="ST">ST (預組)</option>
+                </optgroup>
+            </select>
         </div>
 
         <div class="filter-row" id="rarityFilters">
@@ -166,7 +198,6 @@
             let htmlContent = '';
 
             cards.forEach(card => {
-                // --- 1. 顏色標籤處理 (斜向拼接) ---
                 let displayColorName = card.color ? card.color.trim() : '';
                 let tagStyle = '';
 
@@ -184,14 +215,12 @@
                     else tagStyle += ' color: #fff;';
                 }
 
-                // --- 2. 庫存與價格排版處理 ---
                 let stockNum = card.stock ? card.stock.trim() : '';
                 let isOutOfStock = (stockNum === '0' || stockNum === '');
                 
                 let bottomHTML = '';
 
                 if (isOutOfStock) {
-                    // 缺貨狀態：左邊顯示庫存0，右邊顯示灰色劃線原價 + 售罄按鈕
                     bottomHTML = `
                         <div class="stock-text">庫存: 0</div>
                         <div style="text-align: right;">
@@ -200,14 +229,12 @@
                         </div>
                     `;
                 } else {
-                    // 有貨狀態：左邊顯示真實庫存數字，右邊顯示亮黃色價格
                     bottomHTML = `
                         <div class="stock-text">庫存: ${stockNum}</div>
                         <div class="card-price">${card.price || ''}</div>
                     `;
                 }
 
-                // --- 組合 HTML ---
                 htmlContent += `
                     <div class="card">
                         <img loading="lazy" src="${card.image}" class="card-img" alt="${card.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x420/334155/ffffff?text=OP-TCG';">
@@ -231,6 +258,12 @@
         }
 
         function setupFilterButtons() {
+            // 綁定下拉選單變更事件
+            document.getElementById('packSelect').addEventListener('change', function() {
+                activePack = this.value;
+                filterCards();
+            });
+
             document.querySelectorAll('#colorFilters .filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('#colorFilters .filter-btn').forEach(b => b.classList.remove('active'));
@@ -245,15 +278,6 @@
                     document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     activeType = btn.getAttribute('data-type');
-                    filterCards();
-                });
-            });
-
-            document.querySelectorAll('#packFilters .filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('#packFilters .filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    activePack = btn.getAttribute('data-pack');
                     filterCards();
                 });
             });
