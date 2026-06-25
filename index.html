@@ -33,9 +33,9 @@
             border-radius: 4px; 
             outline: none; 
             cursor: pointer;
-            width: 160px; /* 控制選單寬度 */
+            width: 160px;
         }
-        .filter-select optgroup { color: #fbbf24; font-style: normal; background-color: #0c111d; } /* 分類標題樣式 */
+        .filter-select optgroup { color: #fbbf24; font-style: normal; background-color: #0c111d; }
         .filter-select option { color: #f8fafc; background-color: #1e293b; font-weight: normal; }
         
         /* 卡片網格與樣式 */
@@ -47,7 +47,7 @@
         .card-name { font-size: 13px; font-weight: bold; margin: 0 0 3px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #f1f5f9; }
         .card-meta { font-size: 11px; color: #94a3b8; margin-bottom: 6px; display: flex; align-items: center; }
         
-        /* 顏色標籤 (包含斜向多色) */
+        /* 顏色標籤 */
         .color-tag { display: inline-block; padding: 2px 5px; border-radius: 4px; margin-right: 4px; font-weight: bold; font-size: 10px;}
         
         /* 底部：庫存與價格排版 */
@@ -68,12 +68,10 @@
         <h1>🏴‍☠️ ONE PIECE TCG</h1>
         <input type="text" id="searchInput" class="search-box" placeholder="搜尋角色名、卡號..." oninput="filterCards()">
         
-        <!-- 💡 升級：卡包系列下拉選單 -->
         <div class="filter-row" id="packFilters">
             <span class="row-label">─ 卡包系列</span>
             <select id="packSelect" class="filter-select">
                 <option value="ALL">全部 (ALL)</option>
-                
                 <optgroup label="補充包">
                     <option value="OP17">OP17</option>
                     <option value="OP16">OP16</option>
@@ -93,7 +91,6 @@
                     <option value="OP02">OP02</option>
                     <option value="OP01">OP01</option>
                 </optgroup>
-                
                 <optgroup label="特殊補充包">
                     <option value="EB05">EB05</option>
                     <option value="EB04">EB04</option>
@@ -101,12 +98,10 @@
                     <option value="EB02">EB02</option>
                     <option value="EB01">EB01</option>
                 </optgroup>
-                
                 <optgroup label="高級補充包">
                     <option value="PRB02">PRB02</option>
                     <option value="PRB01">PRB01</option>
                 </optgroup>
-                
                 <optgroup label="起始牌組">
                     <option value="ST">ST (預組)</option>
                 </optgroup>
@@ -176,7 +171,6 @@
             transformHeader: function(header) { return header.trim().toLowerCase(); },
             complete: function(results) {
                 cardData = results.data.filter(card => card.name && card.name.trim() !== "");
-                
                 if (cardData.length === 0) {
                     gallery.innerHTML = '<div class="no-results">有連上 Google 表格，但找不到有效的卡片資料 🏴‍☠️</div>';
                     return;
@@ -217,7 +211,6 @@
 
                 let stockNum = card.stock ? card.stock.trim() : '';
                 let isOutOfStock = (stockNum === '0' || stockNum === '');
-                
                 let bottomHTML = '';
 
                 if (isOutOfStock) {
@@ -258,7 +251,6 @@
         }
 
         function setupFilterButtons() {
-            // 綁定下拉選單變更事件
             document.getElementById('packSelect').addEventListener('change', function() {
                 activePack = this.value;
                 filterCards();
@@ -309,7 +301,17 @@
                                    (cardColor.includes(activeColor)); 
                 
                 const matchType = (activeType === 'ALL') || (card.type === activeType);
-                const matchPack = (activePack === 'ALL') || (searchCode.startsWith(activePack.toLowerCase()));
+                
+                // 🚀 【核心修改位置：卡包分類改判斷 Image 資料夾名稱】
+                const imagePath = card.image ? card.image.toUpperCase() : '';
+                // 例如 imagePath = "OP03/ST04-003.PNG"，split 取出第一段就會是 "OP03"
+                // 若沒有資料夾路徑，例如只寫了 "ST04-003.PNG"，就會直接把檔名前綴拿來比對
+                const packFromImage = imagePath.includes('/') ? imagePath.split('/')[0] : imagePath;
+                
+                // 判斷資料夾名稱是否以使用者選擇的 activePack 開頭
+                // (例如選 ST，就會抓到資料夾名稱是 ST01, ST02... 開頭的圖片)
+                const matchPack = (activePack === 'ALL') || (packFromImage.startsWith(activePack.toUpperCase()));
+
                 const matchRarity = (activeRarity === 'ALL') || (searchRarity === activeRarity);
 
                 return matchSearch && matchColor && matchType && matchPack && matchRarity;
